@@ -156,7 +156,7 @@ The lib contains command for consuming messages
 
 To start consuming messages run the next command in terminal
 ```bash
-php artisan amqp:consume -queue=name-of-queue
+php artisan amqp:consume name-of-queue
 ```
 
 To init all exchanges, bindings, queues run:
