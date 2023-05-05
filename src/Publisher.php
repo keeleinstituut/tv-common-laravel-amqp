@@ -16,7 +16,7 @@ class Publisher extends AmqpBase
 
     public function publish(mixed $message, string $exchange, string $routingKey = '', ?array $headers = null): void
     {
-        $this->declareExchange($exchange);
+        $this->declareExchangeOnce($exchange);
 
         $this->getChannel()->basic_publish(
             $this->composeMessage($message, $headers),
@@ -31,11 +31,11 @@ class Publisher extends AmqpBase
     public function setupExchanges(): void
     {
         foreach ($this->getProperty('publisher.exchanges', []) as $exchangeConfig) {
-            $this->declareExchange($exchangeConfig['exchange']);
+            $this->declareExchangeOnce($exchangeConfig['exchange']);
         }
     }
 
-    private function declareExchange(string $exchange): void
+    private function declareExchangeOnce(string $exchange): void
     {
         if (empty($exchange)) {
             throw new InvalidArgumentException('Exchange is not set');
