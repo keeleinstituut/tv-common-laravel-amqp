@@ -95,7 +95,7 @@ class Consumer extends AmqpBase
      */
     public function setupQueues(): void
     {
-        $queuesConfig = $this->getConsumerProperty('queues');
+        $queuesConfig = $this->getConsumerProperty('queues', []);
         foreach ($queuesConfig as $queueConfig) {
             $this->declareQueue($queueConfig['queue']);
         }
