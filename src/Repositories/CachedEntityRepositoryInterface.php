@@ -11,7 +11,7 @@ interface CachedEntityRepositoryInterface
 
     public function delete(string $id): void;
 
-    public function getLastSyncDateTime(): string;
+    public function getLastSyncDateTime(): ?string;
 
     public function deleteNotSynced(Carbon $syncStartTime): void;
 }
