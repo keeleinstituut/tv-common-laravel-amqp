@@ -2,7 +2,6 @@
 
 namespace Amqp\Repositories;
 
-
 use Carbon\Carbon;
 
 interface CachedEntityRepositoryInterface

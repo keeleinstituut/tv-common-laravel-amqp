@@ -22,7 +22,7 @@ abstract class BaseEntityFullSyncCommand extends Command
             $this->getEntityRepository()->save($resource);
         }
 
-        if (!is_null($lastSyncDateTime)) {
+        if (! is_null($lastSyncDateTime)) {
             $entityRepository->deleteNotSynced($lastSyncDateTime);
         }
     }
@@ -33,7 +33,7 @@ abstract class BaseEntityFullSyncCommand extends Command
 
     private function prepareLastSyncDateTime(): ?Carbon
     {
-        if (!$lastSyncDateTimeAsString = $this->getEntityRepository()->getLastSyncDateTime()) {
+        if (! $lastSyncDateTimeAsString = $this->getEntityRepository()->getLastSyncDateTime()) {
             return null;
         }
 
