@@ -32,6 +32,8 @@ class AmqpServiceProvider extends ServiceProvider
                 Console\ConsumeCommand::class,
                 Console\SetupCommand::class,
             ]);
+
+            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         }
     }
 }
