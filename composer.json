@@ -13,7 +13,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Amqp\\": "src/"
+            "Amqp\\": "src/",
+            "Amqp\\Database\\Helpers\\": "database/helpers/"
         }
     },
     "autoload-dev": {

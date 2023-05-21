@@ -1,6 +1,6 @@
 <?php
 
-namespace helpers;
+namespace Amqp\Database\Helpers;
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Config;
