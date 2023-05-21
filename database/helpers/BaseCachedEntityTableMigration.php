@@ -2,9 +2,10 @@
 
 namespace helpers;
 
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Config;
 
-class BaseCachedEntityTableMigration
+class BaseCachedEntityTableMigration extends Migration
 {
     protected function getTableNameWithSchema(string $tableName): string
     {
