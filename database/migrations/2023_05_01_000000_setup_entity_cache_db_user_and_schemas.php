@@ -78,8 +78,9 @@ return new class extends Migration
     private function createDBUserWithAllPrivilegesOnSchema(string $username, string $password, string $schema)
     {
         DB::statement("CREATE USER $username WITH ENCRYPTED PASSWORD '$password'");
-        DB::statement("GRANT USAGE ON SCHEMA $schema TO $username");
+        DB::statement("GRANT ALL PRIVILEGES ON SCHEMA $schema TO $username");
         DB::statement("GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA $schema TO $username");
+        DB::statement("ALTER DEFAULT PRIVILEGES IN SCHEMA $schema GRANT USAGE ON TABLES TO $username;");
     }
 
     private function grantReadPrivilegesOnSchema(string $username, string $schema)

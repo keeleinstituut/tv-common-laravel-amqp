@@ -9,9 +9,9 @@ class BaseCachedEntityTableMigration extends Migration
 {
     protected function getTableNameWithSchema(string $tableName): string
     {
-        return join('.', [
+        return implode('.', [
             Config::get('database.connections.pgsql-entity-cache.search_path'),
-            $tableName
+            $tableName,
         ]);
     }
 }
