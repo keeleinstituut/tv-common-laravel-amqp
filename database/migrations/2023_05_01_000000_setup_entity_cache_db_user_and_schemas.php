@@ -4,8 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
-return new class extends Migration {
-
+return new class extends Migration
+{
     const DEFAULT_SCHEMA_NAME = 'public';
 
     /**
@@ -53,11 +53,11 @@ return new class extends Migration {
             return;
         }
 
-        $isExists = filled(DB::select("SELECT 1 FROM information_schema.schemata WHERE schema_name = :schema", [
-            'schema' => $schemaName
+        $isExists = filled(DB::select('SELECT 1 FROM information_schema.schemata WHERE schema_name = :schema', [
+            'schema' => $schemaName,
         ]));
 
-        if (!$isExists) {
+        if (! $isExists) {
             DB::statement("CREATE SCHEMA $schemaName");
             DB::statement("SET search_path TO $schemaName");
         }
@@ -78,7 +78,8 @@ return new class extends Migration {
     private function createDBUserWithAllPrivilegesOnSchema(string $username, string $password, string $schema)
     {
         DB::statement("CREATE USER $username WITH ENCRYPTED PASSWORD '$password'");
-        DB::statement("GRANT ALL PRIVILEGES ON SCHEMA $schema TO $username");
+        DB::statement("GRANT USAGE ON SCHEMA $schema TO $username");
+        DB::statement("GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA $schema TO $username");
     }
 
     private function grantReadPrivilegesOnSchema(string $username, string $schema)
@@ -91,7 +92,7 @@ return new class extends Migration {
     {
         $value = Config::get("database.connections.$name");
         // Ensure the env variable only contains alphanumeric characters and underscores
-        if (!preg_match('/^[a-zA-Z0-9_]+$/', $value)) {
+        if (! preg_match('/^[a-zA-Z0-9_]+$/', $value)) {
             throw new InvalidArgumentException("Incorrect $name env variable value: '$value'");
         }
 
