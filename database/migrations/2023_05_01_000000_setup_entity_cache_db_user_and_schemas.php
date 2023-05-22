@@ -78,15 +78,38 @@ return new class extends Migration
     private function createDBUserWithAllPrivilegesOnSchema(string $username, string $password, string $schema)
     {
         DB::statement("CREATE USER $username WITH ENCRYPTED PASSWORD '$password'");
-        DB::statement("GRANT ALL PRIVILEGES ON SCHEMA $schema TO $username");
-        DB::statement("GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA $schema TO $username");
-        DB::statement("ALTER DEFAULT PRIVILEGES IN SCHEMA $schema GRANT USAGE ON TABLES TO $username;");
+        DB::statement("GRANT ALL ON SCHEMA $schema TO $username");
+
+        /**
+         * Allows to set the privileges that applies to objects that already exist
+         */
+        DB::statement("GRANT ALL ON ALL TABLES IN SCHEMA $schema TO $username");
+        DB::statement("GRANT ALL ON ALL SEQUENCES IN SCHEMA $schema TO $username");
+        DB::statement("GRANT ALL ON ALL PROCEDURES IN SCHEMA $schema TO $username");
+        DB::statement("GRANT ALL ON ALL ROUTINES IN SCHEMA $schema TO $username");
+        DB::statement("GRANT ALL ON ALL FUNCTIONS IN SCHEMA $schema TO $username");
+
+        /**
+         * Allows to set the privileges that will be applied to objects created in the future
+         */
+        DB::statement("ALTER DEFAULT PRIVILEGES IN SCHEMA $schema GRANT ALL ON TABLES TO $username;");
+        DB::statement("ALTER DEFAULT PRIVILEGES IN SCHEMA $schema GRANT ALL ON SEQUENCES TO $username;");
+        DB::statement("ALTER DEFAULT PRIVILEGES IN SCHEMA $schema GRANT ALL ON TYPES TO $username;");
+        DB::statement("ALTER DEFAULT PRIVILEGES IN SCHEMA $schema GRANT ALL ON FUNCTIONS TO $username;");
+        DB::statement("ALTER DEFAULT PRIVILEGES IN SCHEMA $schema GRANT ALL ON ROUTINES TO $username;");
     }
 
     private function grantReadPrivilegesOnSchema(string $username, string $schema)
     {
         DB::statement("GRANT USAGE ON SCHEMA $schema TO $username");
+        /**
+         * Allows to set the privileges that applies to objects that already exist
+         */
         DB::statement("GRANT SELECT,REFERENCES ON ALL TABLES IN SCHEMA $schema TO $username");
+        /**
+         * Allows to set the privileges that will be applied to objects created in the future
+         */
+        DB::statement("ALTER DEFAULT PRIVILEGES IN SCHEMA $schema GRANT SELECT,REFERENCES ON TABLES TO $username;");
     }
 
     private function getDatabaseConnectionConfigValue(string $name)
