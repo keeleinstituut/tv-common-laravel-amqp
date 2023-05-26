@@ -30,7 +30,8 @@ class AmqpServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 Console\ConsumeCommand::class,
-                Console\SetupCommand::class,
+                Console\AmqpSetupCommand::class,
+                Console\DbSchemasSetupCommand::class
             ]);
 
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');

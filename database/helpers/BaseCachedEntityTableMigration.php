@@ -7,11 +7,8 @@ use Illuminate\Support\Facades\Config;
 
 class BaseCachedEntityTableMigration extends Migration
 {
-    protected function getTableNameWithSchema(string $tableName): string
+    public function getConnection(): ?string
     {
-        return implode('.', [
-            Config::get('database.connections.pgsql-entity-cache.search_path'),
-            $tableName,
-        ]);
+        return Config::get('sync.pgsql_sync_connection.name', $this->connection);
     }
 }

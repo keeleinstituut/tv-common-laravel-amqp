@@ -7,7 +7,7 @@ use Amqp\Publisher;
 use Exception;
 use Illuminate\Console\Command;
 
-class SetupCommand extends Command
+class AmqpSetupCommand extends Command
 {
     protected $signature = 'amqp:setup';
 
