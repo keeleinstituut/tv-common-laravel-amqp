@@ -1,6 +1,6 @@
 <?php
 
-namespace Amqp;
+namespace SyncTools;
 
 use Exception;
 use Illuminate\Contracts\Support\Jsonable;
@@ -10,7 +10,7 @@ use JsonSerializable;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
 
-class Publisher extends AmqpBase
+class AmqpPublisher extends AmqpBase
 {
     private array $declaredExchanges = [];
 

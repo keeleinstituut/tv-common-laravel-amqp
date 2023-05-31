@@ -1,6 +1,6 @@
 <?php
 
-namespace Amqp\Events;
+namespace SyncTools\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;

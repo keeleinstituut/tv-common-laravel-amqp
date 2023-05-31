@@ -1,16 +1,16 @@
 <?php
 
-namespace Amqp;
+namespace SyncTools;
 
-use Amqp\Exceptions\InvalidConfigurationException;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Connection\AMQPSSLConnection;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use SyncTools\Exceptions\InvalidConfigurationException;
 
-class ConnectionRegistry
+class AmqpConnectionRegistry
 {
     private array $connectionProperties;
 

@@ -1,6 +1,6 @@
 {
     "name": "keeleinstituut/tv-common-laravel-amqp",
-    "description": "RabbitMQ lib of Tõlkevärav",
+    "description": "Synchronization tools for Tõlkevärav",
     "keywords": [
         "laravel",
         "amqp",
@@ -13,13 +13,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Amqp\\": "src/",
-            "Amqp\\Database\\Helpers\\": "database/helpers/"
+            "SyncTools\\": "src/",
+            "SyncTools\\Database\\Helpers\\": "database/helpers/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Amqp\\Tests\\": "tests/"
+            "SyncTools\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -28,7 +28,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Amqp\\AmqpServiceProvider"
+                "SyncTools\\SyncToolsServiceProvider"
             ]
         }
     },

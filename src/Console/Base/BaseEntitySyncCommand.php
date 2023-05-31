@@ -1,12 +1,12 @@
 <?php
 
-namespace Amqp\Console\Base;
+namespace SyncTools\Console\Base;
 
-use Amqp\Exceptions\ResourceGatewayConnectionException;
-use Amqp\Exceptions\ResourceNotFoundException;
-use Amqp\Gateways\ResourceGatewayInterface;
-use Amqp\Repositories\CachedEntityRepositoryInterface;
 use Illuminate\Console\Command;
+use SyncTools\Exceptions\ResourceGatewayConnectionException;
+use SyncTools\Exceptions\ResourceNotFoundException;
+use SyncTools\Gateways\ResourceGatewayInterface;
+use SyncTools\Repositories\CachedEntityRepositoryInterface;
 
 abstract class BaseEntitySyncCommand extends Command
 {

@@ -1,8 +1,7 @@
 <?php
 
-namespace Amqp;
+namespace SyncTools;
 
-use Amqp\Exceptions\InvalidConfigurationException;
 use Closure;
 use Exception;
 use Illuminate\Support\Arr;
@@ -11,9 +10,10 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use PhpAmqpLib\Message\AMQPMessage;
+use SyncTools\Exceptions\InvalidConfigurationException;
 use Throwable;
 
-class Consumer extends AmqpBase
+class AmqpConsumer extends AmqpBase
 {
     protected ?Closure $callback;
 

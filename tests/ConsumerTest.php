@@ -1,8 +1,7 @@
 <?php
 
-namespace Amqp\Tests;
+namespace SyncTools\Tests;
 
-use Amqp\Consumer;
 use Exception;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
@@ -10,17 +9,18 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PhpAmqpLib\Message\AMQPMessage;
 use RuntimeException;
+use SyncTools\AmqpConsumer;
 
 class ConsumerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private Consumer $consumer;
+    private AmqpConsumer $consumer;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->consumer = new Consumer($this->registry);
+        $this->consumer = new AmqpConsumer($this->registry);
     }
 
     /**

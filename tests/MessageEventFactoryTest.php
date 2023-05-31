@@ -1,14 +1,14 @@
 <?php
 
-namespace Amqp\Tests;
+namespace SyncTools\Tests;
 
-use Amqp\Events\MessageEventFactory;
-use Amqp\Exceptions\InvalidConfigurationException;
-use Amqp\Tests\Events\DummyEvent;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Orchestra\Testbench\TestCase;
 use PhpAmqpLib\Message\AMQPMessage;
+use SyncTools\Events\MessageEventFactory;
+use SyncTools\Exceptions\InvalidConfigurationException;
+use SyncTools\Tests\Events\DummyEvent;
 
 class MessageEventFactoryTest extends TestCase
 {

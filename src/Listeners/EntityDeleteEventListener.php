@@ -1,9 +1,9 @@
 <?php
 
-namespace Amqp\Listeners;
+namespace SyncTools\Listeners;
 
-use Amqp\Events\SyncEntityEvent;
-use Amqp\Repositories\CachedEntityRepositoryInterface;
+use SyncTools\Events\SyncEntityEvent;
+use SyncTools\Repositories\CachedEntityRepositoryInterface;
 
 abstract class EntityDeleteEventListener
 {

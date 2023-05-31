@@ -1,25 +1,25 @@
 <?php
 
-namespace Amqp\Tests;
+namespace SyncTools\Tests;
 
-use Amqp\Publisher;
 use Exception;
 use Illuminate\Support\Str;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
+use SyncTools\AmqpPublisher;
 
 class PublisherTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private Publisher $publisher;
+    private AmqpPublisher $publisher;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->publisher = new Publisher($this->registry);
+        $this->publisher = new AmqpPublisher($this->registry);
     }
 
     /**

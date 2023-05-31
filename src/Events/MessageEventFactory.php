@@ -1,10 +1,10 @@
 <?php
 
-namespace Amqp\Events;
+namespace SyncTools\Events;
 
-use Amqp\Exceptions\InvalidConfigurationException;
 use Illuminate\Support\Facades\Config;
 use PhpAmqpLib\Message\AMQPMessage;
+use SyncTools\Exceptions\InvalidConfigurationException;
 
 class MessageEventFactory implements MessageEventFactoryInterface
 {

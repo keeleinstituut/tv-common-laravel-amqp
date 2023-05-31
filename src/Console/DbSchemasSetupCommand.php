@@ -1,6 +1,6 @@
 <?php
 
-namespace Amqp\Console;
+namespace SyncTools\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Connection;
@@ -15,25 +15,25 @@ class DbSchemasSetupCommand extends Command
 
     public function handle(): void
     {
-        $this->createSchemaIfNotExists(Config::get('sync.pgsql_sync_connection.properties.schema'));
-        $this->createSchemaIfNotExists(Config::get('sync.pgsql_app_connection.properties.schema'));
+        $this->createSchemaIfNotExists(Config::get('pgsql-connection.sync.properties.schema'));
+        $this->createSchemaIfNotExists(Config::get('pgsql-connection.app.properties.schema'));
 
         $this->createDBUserIfNotExistsWithAllPrivilegesOnSchema(
-            Config::get('sync.pgsql_app_connection.properties.username'),
-            Config::get('sync.pgsql_app_connection.properties.password'),
-            Config::get('sync.pgsql_app_connection.properties.schema')
+            Config::get('pgsql-connection.app.properties.username'),
+            Config::get('pgsql-connection.app.properties.password'),
+            Config::get('pgsql-connection.app.properties.schema')
         );
 
         $this->createDBUserIfNotExistsWithAllPrivilegesOnSchema(
-            Config::get('sync.pgsql_sync_connection.properties.username'),
-            Config::get('sync.pgsql_sync_connection.properties.password'),
-            Config::get('sync.pgsql_sync_connection.properties.schema')
+            Config::get('pgsql-connection.sync.properties.username'),
+            Config::get('pgsql-connection.sync.properties.password'),
+            Config::get('pgsql-connection.sync.properties.schema')
         );
 
         $this->grantReadPrivilegesOnSchema(
-            Config::get('sync.pgsql_app_connection.properties.username'),
-            Config::get('sync.pgsql_sync_connection.properties.schema'),
-            Config::get('sync.pgsql_sync_connection.properties.username')
+            Config::get('pgsql-connection.app.properties.username'),
+            Config::get('pgsql-connection.sync.properties.schema'),
+            Config::get('pgsql-connection.sync.properties.username')
         );
     }
 
@@ -46,12 +46,12 @@ class DbSchemasSetupCommand extends Command
     private function createDBUserIfNotExistsWithAllPrivilegesOnSchema(string $username, string $password, string $schema): void
     {
         $isExists = filled(
-            $this->connection()->select("SELECT * FROM pg_catalog.pg_user WHERE usename = :username", [
-                'username' => $username
+            $this->connection()->select('SELECT * FROM pg_catalog.pg_user WHERE usename = :username', [
+                'username' => $username,
             ])
         );
 
-        if (!$isExists) {
+        if (! $isExists) {
             $this->connection()->statement("CREATE USER $username WITH ENCRYPTED PASSWORD '$password'");
         }
 
@@ -93,6 +93,6 @@ class DbSchemasSetupCommand extends Command
 
     private function connection(): Connection
     {
-        return DB::connection(Config::get('sync.pgsql_admin_connection'));
+        return DB::connection(Config::get('pgsql-connection.admin.name'));
     }
 }

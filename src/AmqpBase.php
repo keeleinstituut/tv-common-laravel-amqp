@@ -1,6 +1,6 @@
 <?php
 
-namespace Amqp;
+namespace SyncTools;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
@@ -12,7 +12,7 @@ class AmqpBase
 
     private AMQPChannel $channel;
 
-    public function __construct(private readonly ConnectionRegistry $registry)
+    public function __construct(private readonly AmqpConnectionRegistry $registry)
     {
         $this->properties = Config::get('amqp', []);
         $this->channel = $this->registry->getConnection()->channel();

@@ -1,6 +1,6 @@
 <?php
 
-use Amqp\Events\MessageEventFactory;
+use SyncTools\Events\MessageEventFactory;
 
 return [
     /*

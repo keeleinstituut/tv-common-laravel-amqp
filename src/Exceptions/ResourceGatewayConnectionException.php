@@ -1,6 +1,6 @@
 <?php
 
-namespace Amqp\Exceptions;
+namespace SyncTools\Exceptions;
 
 use Exception;
 

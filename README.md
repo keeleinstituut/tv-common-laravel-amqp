@@ -1,6 +1,8 @@
 # tv-common-laravel-amqp
 
-The simple lib for publishing/consuming messages using AMQP protocol (RabbitMQ).
+The simple lib for synchronization of entities between services. It includes:
+- publishing/consuming messages using AMQP protocol (RabbitMQ).
+- Helper classes for full/single entities synchronization
 
 ## Install
 
@@ -25,7 +27,7 @@ Add the next code into `composer.json`
 
 ```bash
 # Publish config file
-php artisan vendor:publish --provider="Amqp\AmqpServiceProvider"
+php artisan vendor:publish --provider="SyncTools\SyncToolsServiceProvider"
 ```
 
 ### Parameters
@@ -141,7 +143,7 @@ The lib contains two singletons that can be easily injected:
 ### Publish message
 
 ```php
-$publisher = app()->make(Amqp\Publisher);
+$publisher = app()->make(SyncTools\Publisher);
 
 $publisher->publish(['key' => 'value'], 'name-of-exchange');
 $publisher->publish($objectThatImplementsJsonSerializable, 'name-of-exchange', 'name-of-routing-key');

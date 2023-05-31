@@ -1,8 +1,8 @@
 <?php
 
-namespace Amqp\Tests\Events;
+namespace SyncTools\Tests\Events;
 
-use Amqp\Events\BaseConsumedEvent;
+use SyncTools\Events\BaseConsumedEvent;
 
 class DummyEvent extends BaseConsumedEvent
 {

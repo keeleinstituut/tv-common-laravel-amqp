@@ -1,12 +1,12 @@
 <?php
 
-namespace Amqp\Tests;
+namespace SyncTools\Tests;
 
-use Amqp\ConnectionRegistry;
 use Mockery;
 use Orchestra\Testbench\TestCase as Orchestra;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
+use SyncTools\AmqpConnectionRegistry;
 
 class TestCase extends Orchestra
 {
@@ -14,7 +14,7 @@ class TestCase extends Orchestra
 
     protected AMQPChannel $channel;
 
-    protected ConnectionRegistry $registry;
+    protected AmqpConnectionRegistry $registry;
 
     protected function setUp(): void
     {
@@ -86,7 +86,7 @@ class TestCase extends Orchestra
         $this->connection->shouldReceive('channel')
             ->andReturn($this->channel);
 
-        $this->registry = Mockery::mock(ConnectionRegistry::class)
+        $this->registry = Mockery::mock(AmqpConnectionRegistry::class)
             ->shouldIgnoreMissing();
 
         $this->registry->shouldReceive('getConnection')

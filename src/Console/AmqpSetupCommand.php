@@ -1,11 +1,11 @@
 <?php
 
-namespace Amqp\Console;
+namespace SyncTools\Console;
 
-use Amqp\Consumer;
-use Amqp\Publisher;
 use Exception;
 use Illuminate\Console\Command;
+use SyncTools\AmqpConsumer;
+use SyncTools\AmqpPublisher;
 
 class AmqpSetupCommand extends Command
 {
@@ -16,7 +16,7 @@ class AmqpSetupCommand extends Command
     /**
      * @throws Exception
      */
-    public function handle(Consumer $consumer, Publisher $publisher): void
+    public function handle(AmqpConsumer $consumer, AmqpPublisher $publisher): void
     {
         $publisher->setupExchanges();
         $consumer->setupQueues();

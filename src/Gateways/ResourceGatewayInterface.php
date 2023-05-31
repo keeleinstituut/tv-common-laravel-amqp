@@ -1,10 +1,10 @@
 <?php
 
-namespace Amqp\Gateways;
+namespace SyncTools\Gateways;
 
-use Amqp\Exceptions\ResourceGatewayConnectionException;
-use Amqp\Exceptions\ResourceNotFoundException;
 use Generator;
+use SyncTools\Exceptions\ResourceGatewayConnectionException;
+use SyncTools\Exceptions\ResourceNotFoundException;
 
 interface ResourceGatewayInterface
 {

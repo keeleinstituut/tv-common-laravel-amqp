@@ -1,12 +1,12 @@
 <?php
 
-namespace Amqp\Console;
+namespace SyncTools\Console;
 
-use Amqp\Consumer;
-use Amqp\Events\MessageEventFactory;
 use Exception;
 use Illuminate\Console\Command;
 use PhpAmqpLib\Message\AMQPMessage;
+use SyncTools\AmqpConsumer;
+use SyncTools\Events\MessageEventFactory;
 
 class ConsumeCommand extends Command
 {
@@ -22,7 +22,7 @@ class ConsumeCommand extends Command
     /**
      * @throws Exception
      */
-    public function handle(Consumer $consumer)
+    public function handle(AmqpConsumer $consumer)
     {
         $queue = $this->argument('queue');
         $consumer->setCallback(function (AMQPMessage $message) use ($queue) {
@@ -34,15 +34,15 @@ class ConsumeCommand extends Command
     private function getProperties(): array
     {
         $properties = [];
-        if (! is_null($this->option('timeout'))) {
+        if (filled($this->option('timeout'))) {
             $properties['timeout'] = $this->option('timeout');
         }
 
-        if (! is_null($this->option('prefetch-size'))) {
+        if (filled($this->option('prefetch-size'))) {
             $properties['qos']['prefetch_size'] = $this->option('prefetch-size');
         }
 
-        if (! is_null($this->option('prefetch-count'))) {
+        if (filled($this->option('prefetch-count'))) {
             $properties['qos']['prefetch_count'] = $this->option('prefetch-count');
         }
 

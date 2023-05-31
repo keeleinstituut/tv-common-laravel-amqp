@@ -1,6 +1,6 @@
 <?php
 
-namespace Amqp\Repositories;
+namespace SyncTools\Repositories;
 
 use Carbon\Carbon;
 

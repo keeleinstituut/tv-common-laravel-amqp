@@ -1,15 +1,14 @@
 <?php
 
-namespace Amqp\Traits;
+namespace SyncTools\Traits;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\Config;
 
 trait HasCachedEntityFactory
 {
     use HasFactory {
-        factory as protected getFactory;
+        HasFactory::factory as protected getFactory;
     }
 
     /**
@@ -21,6 +20,6 @@ trait HasCachedEntityFactory
      */
     public static function factory($count = null, $state = []): Factory
     {
-        return self::getFactory($count, $state)->connection(Config::get('sync.pgsql_sync_connection.name'));
+        return self::getFactory($count, $state)->connection(config('pgsql-connection.sync.name'));
     }
 }
