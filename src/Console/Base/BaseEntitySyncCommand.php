@@ -25,7 +25,7 @@ abstract class BaseEntitySyncCommand extends Command
         }
     }
 
-    abstract public function getGateway(): ResourceGatewayInterface;
+    abstract protected function getGateway(): ResourceGatewayInterface;
 
-    abstract public function getRepository(): CachedEntityRepositoryInterface;
+    abstract protected function getRepository(): CachedEntityRepositoryInterface;
 }

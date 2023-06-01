@@ -27,11 +27,11 @@ abstract class BaseEntityFullSyncCommand extends Command
         }
     }
 
-    abstract public function getResourceGateway(): ResourceGatewayInterface;
+    abstract protected function getResourceGateway(): ResourceGatewayInterface;
 
-    abstract public function getEntityRepository(): CachedEntityRepositoryInterface;
+    abstract protected function getEntityRepository(): CachedEntityRepositoryInterface;
 
-    private function prepareLastSyncDateTime(): ?Carbon
+    protected function prepareLastSyncDateTime(): ?Carbon
     {
         if (empty($lastSyncDateTimeAsString = $this->getEntityRepository()->getLastSyncDateTime())) {
             return null;
