@@ -2,7 +2,8 @@
 
 The simple lib for synchronization of entities between services. It includes:
 - publishing/consuming messages using AMQP protocol (RabbitMQ).
-- Helper classes for full/single entities synchronization
+- Base commands for full/single entities' synchronization.
+- Setup of PGSQL database for read-only access to the synced entities.
 
 ## Install
 
@@ -123,7 +124,7 @@ return [
 
 **Events**
 
-The library works in the way that after consuming of the message it produce a [Laravel event](https://laravel.com/docs/10.x/events) based on received message.
+The library works in the way that after consuming of the message it produces a [Laravel event](https://laravel.com/docs/10.x/events) based on received message.
 To make the decision about what event should be triggered the `events` config section is used.
 
 It contains two keys:
@@ -168,6 +169,41 @@ php artisan amqp:setup
 
 It's not mandatory because exchanges, bindings, and queues will be created automatically when you will interact with them.
 
+### Setup read-only access for synced entities
+To create separate schemas for the application use the next command:
+
+```bash
+php artisan db-schema:setup
+```
+
+This command will produce separate db users and schemas for application and synced entities.
+The application user will have privileges to read data from tables in synced entities schema and reference to them.
+The sync user will have privileges to edit data inside the synced entities' schema and the application schema won't be accessible for it.
+
+The command can be run multiple times, it is implemented in such a way as to make it easier to use in deployment processes.
+
+If application already has some tables better to use the schema that is currently in use.
+
+Detailed info about configuration is available in: `config/pgsql-connection.php`
+
+To create a table inside the cached entities' schema (with read-only access for the app) extend migration from `SyncTools\Database\Helpers\BaseCachedEntityTableMigration`.
+
+To implement full sync of some cached entities' extend console command from `SyncTools\Console\Base\BaseEntityFullSyncCommand`.
+
+To implement sync of some cached entity by ID extend console command from `SyncTools\Console\Base\BaseEntitySyncCommand`.
+
+To add factory for the cached entity use trait `SyncTools\Traits\HasCachedEntityFactory`.
+
+Note All Eloquent models that belong to cached entities' schema tables should have a schema name prefix for the table name.
+Example:
+```php
+class Institution extends Model
+{
+    use HasCachedEntityFactory, HasUuids, SoftDeletes;
+
+    protected $table = 'entity_cache.cached_institutions';
+}
+```
 
 ## Tests
 ```bash
