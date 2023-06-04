@@ -11,7 +11,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 use RuntimeException;
 use SyncTools\AmqpConsumer;
 
-class ConsumerTest extends TestCase
+class ConsumerTest extends AmqpTestCase
 {
     use MockeryPHPUnitIntegration;
 

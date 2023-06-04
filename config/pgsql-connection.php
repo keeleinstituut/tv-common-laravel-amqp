@@ -4,6 +4,7 @@
  * The file contains the configuration of 3 different connections to the same database but with different users and schemas.
  * The functionality is needed to make cached tables read-only for the app user and writable for the sync user.
  * Also, the configuration contains an admin PGSQL user which is needed to create additional users and schemas inside the database.
+ *
  * @see DbSchemasSetupCommand
  */
 return [

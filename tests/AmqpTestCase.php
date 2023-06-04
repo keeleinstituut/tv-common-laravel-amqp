@@ -8,7 +8,7 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
 use SyncTools\AmqpConnectionRegistry;
 
-class TestCase extends Orchestra
+class AmqpTestCase extends Orchestra
 {
     protected AbstractConnection $connection;
 

@@ -10,7 +10,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
 use SyncTools\AmqpPublisher;
 
-class PublisherTest extends TestCase
+class PublisherTest extends AmqpTestCase
 {
     use MockeryPHPUnitIntegration;
 
