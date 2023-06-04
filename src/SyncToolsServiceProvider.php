@@ -30,17 +30,7 @@ class SyncToolsServiceProvider extends ServiceProvider
             return new AmqpConsumer(app()->make(AmqpConnectionRegistry::class));
         });
 
-        $this->registerEvents();
-
         $this->registerCommands();
-    }
-
-    protected function registerEvents()
-    {
-        $this->app['events']->listen(
-            CommandStarting::class,
-            MigrationCommandStartingListener::class
-        );
     }
 
     protected function registerCommands()
