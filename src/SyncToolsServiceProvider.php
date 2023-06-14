@@ -2,9 +2,7 @@
 
 namespace SyncTools;
 
-use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Support\ServiceProvider;
-use SyncTools\Listeners\MigrationCommandStartingListener;
 
 class SyncToolsServiceProvider extends ServiceProvider
 {
