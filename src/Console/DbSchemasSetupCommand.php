@@ -7,6 +7,9 @@ use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @deprecated use docker initialization scripts instead
+ */
 class DbSchemasSetupCommand extends Command
 {
     protected $signature = 'db-schema:setup';
