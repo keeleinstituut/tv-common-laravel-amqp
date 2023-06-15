@@ -1,15 +1,12 @@
 <?php
 
 /**
- * The file contains the configuration of 3 different connections to the same database but with different users and schemas.
+ * The file contains the configuration of 2 different connections to the same database but with different users and schemas.
  * The functionality is needed to make cached tables read-only for the app user and writable for the sync user.
- * Also, the configuration contains an admin PGSQL user which is needed to create additional users and schemas inside the database.
- *
- * @see DbSchemasSetupCommand
  */
 return [
     /*
-     * Main application PGSQL connection.
+     * PGSQL connection that will be used by the app. The connection will have readonly access to cached entities schema.
      */
     'app' => [
         'properties' => [
@@ -29,7 +26,9 @@ return [
         ],
         'name' => env('PG_SYNC_CONNECTION_NAME', 'entity_sync'),
     ],
-    /*
+    /**
+     * @deprecated
+     * @see DbSchemasSetupCommand
      * Admin PGSQL connection with user that have privileges for creation users and schemas.
      */
     'admin' => [
