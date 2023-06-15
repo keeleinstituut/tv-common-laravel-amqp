@@ -3,12 +3,15 @@
 namespace SyncTools\Console\Base;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use SyncTools\Exceptions\ResourceGatewayConnectionException;
 use SyncTools\Gateways\ResourceGatewayInterface;
 use SyncTools\Repositories\CachedEntityRepositoryInterface;
 
 abstract class BaseEntityFullSyncCommand extends Command
 {
+    protected int $transactionAttemptsCount = 5;
+
     /**
      * @throws ResourceGatewayConnectionException
      */
@@ -18,7 +21,10 @@ abstract class BaseEntityFullSyncCommand extends Command
         $entityRepository->cleanupLastSyncDateTime();
 
         foreach ($this->getResourceGateway()->getResources() as $resource) {
-            $entityRepository->save($resource);
+            DB::transaction(
+                fn () => $entityRepository->save($resource),
+                $this->transactionAttemptsCount
+            );
         }
 
         $entityRepository->deleteNotSynced();
