@@ -2,10 +2,19 @@
 
 namespace SyncTools\Traits;
 
+use Illuminate\Support\Str;
+
 trait HasCachedEntityDbSchema
 {
     public function getTable(): string
     {
-        return config('pgsql-connection.sync.properties.schema').'.'.parent::getTable();
+        $tableName = parent::getTable();
+        $schemaPrefix = config('pgsql-connection.sync.properties.schema').'.';
+
+        if (Str::startsWith($tableName, $schemaPrefix)) {
+            return $tableName;
+        }
+
+        return $schemaPrefix.$tableName;
     }
 }
