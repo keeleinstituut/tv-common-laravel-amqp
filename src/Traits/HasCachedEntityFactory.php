@@ -5,7 +5,7 @@ namespace SyncTools\Traits;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class HasCachedEntityFactory
+trait HasCachedEntityFactory
 {
     use HasFactory {
         HasFactory::factory as protected getFactory;
