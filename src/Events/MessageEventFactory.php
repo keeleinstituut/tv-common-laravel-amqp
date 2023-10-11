@@ -27,7 +27,7 @@ class MessageEventFactory implements MessageEventFactoryInterface
             throw new InvalidConfigurationException("$eventClassName should extend ".BaseConsumedEvent::class);
         }
 
-        return $eventClassName::produceFromMessage(json_decode($message->getBody(), true));
+        return $eventClassName::produceFromMessage($message);
     }
 
     private function getEventClassName(string $key): string

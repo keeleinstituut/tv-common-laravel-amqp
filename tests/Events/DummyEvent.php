@@ -2,6 +2,7 @@
 
 namespace SyncTools\Tests\Events;
 
+use PhpAmqpLib\Message\AMQPMessage;
 use SyncTools\Events\BaseConsumedEvent;
 
 class DummyEvent extends BaseConsumedEvent
@@ -10,8 +11,8 @@ class DummyEvent extends BaseConsumedEvent
     {
     }
 
-    public static function produceFromMessage(array $body): BaseConsumedEvent
+    public static function produceFromMessage(AMQPMessage $message): BaseConsumedEvent
     {
-        return new static($body);
+        return new static(json_decode($message->getBody(), true));
     }
 }
