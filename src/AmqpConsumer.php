@@ -103,7 +103,7 @@ class AmqpConsumer extends AmqpBase
 
     private function acknowledgeIfRequired(AMQPMessage $message): void
     {
-        if (! $this->getConsumerProperty('enable_manual_acknowledgement')) {
+        if (! $this->getConsumerProperty('enable_manual_acknowledgement', false)) {
             $message->getChannel()->basic_ack($message->getDeliveryTag());
         }
 
