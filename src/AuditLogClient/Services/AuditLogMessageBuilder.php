@@ -2,7 +2,7 @@
 
 namespace AuditLogClient\Services;
 
-use AuditLogClient\DataTransferObjects\AuditLogEvent;
+use AuditLogClient\DataTransferObjects\AuditLogMessage;
 use AuditLogClient\Enums\AuditLogEventFailureType;
 use AuditLogClient\Enums\AuditLogEventObjectType;
 use AuditLogClient\Enums\AuditLogEventType;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Request;
 
-class AuditLogEventBuilder
+class AuditLogMessageBuilder
 {
     public function __construct(
         private ?DateTime $happenedAt = null,
@@ -69,7 +69,7 @@ class AuditLogEventBuilder
         );
     }
 
-    public function toFinishProjectEvent(string $projectId, string $projectExtId): AuditLogEvent
+    public function toFinishProjectEvent(string $projectId, string $projectExtId): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::FinishProject, [
             'project_id' => $projectId,
@@ -77,7 +77,7 @@ class AuditLogEventBuilder
         ]);
     }
 
-    public function toRewindWorkflowEvent(string $workflowId, string $workflowName): AuditLogEvent
+    public function toRewindWorkflowEvent(string $workflowId, string $workflowName): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::RewindWorkflow, [
             'workflow_id' => $workflowId,
@@ -91,7 +91,7 @@ class AuditLogEventBuilder
         throw new BadMethodCallException('DISPATCH_NOTIFICATION payload not yet determined or implemented.');
     }
 
-    public function toDownloadProjectFileEvent(mixed $mediaId, string $projectId, string $fileName): AuditLogEvent
+    public function toDownloadProjectFileEvent(mixed $mediaId, string $projectId, string $fileName): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::DownloadProjectFile, [
             'media_id' => $mediaId,
@@ -100,7 +100,7 @@ class AuditLogEventBuilder
         ]);
     }
 
-    public function toExportProjectsReportEvent(?string $queryStartDate, ?string $queryEndDate, ?string $queryStatus): AuditLogEvent
+    public function toExportProjectsReportEvent(?string $queryStartDate, ?string $queryEndDate, ?string $queryStatus): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::ExportProjectsReport, [
             'query_start_date' => $queryStartDate,
@@ -109,7 +109,7 @@ class AuditLogEventBuilder
         ]);
     }
 
-    public function toModifyObjectEvent(AuditLogEventObjectType $objectType, mixed $objectId, array $preModificationSubset, array $postModificationSubset): AuditLogEvent
+    public function toModifyObjectEvent(AuditLogEventObjectType $objectType, mixed $objectId, array $preModificationSubset, array $postModificationSubset): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::ModifyObject, [
             'object_type' => $objectType,
@@ -119,7 +119,7 @@ class AuditLogEventBuilder
         ]);
     }
 
-    public function toCreateObjectEvent(AuditLogEventObjectType $objectType, array $objectData): AuditLogEvent
+    public function toCreateObjectEvent(AuditLogEventObjectType $objectType, array $objectData): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::CreateObject, [
             'object_type' => $objectType,
@@ -127,7 +127,7 @@ class AuditLogEventBuilder
         ]);
     }
 
-    public function toRemoveObjectEvent(AuditLogEventObjectType $objectType, array $objectIdentitySubset): AuditLogEvent
+    public function toRemoveObjectEvent(AuditLogEventObjectType $objectType, array $objectIdentitySubset): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::RemoveObject, [
             'object_type' => $objectType,
@@ -135,7 +135,7 @@ class AuditLogEventBuilder
         ]);
     }
 
-    public function toImportTranslationMemoryEvent(mixed $translationMemoryId, string $translationMemoryName): AuditLogEvent
+    public function toImportTranslationMemoryEvent(mixed $translationMemoryId, string $translationMemoryName): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::ImportTranslationMemory, [
             'translation_memory_id' => $translationMemoryId,
@@ -143,7 +143,7 @@ class AuditLogEventBuilder
         ]);
     }
 
-    public function toExportTranslationMemoryEvent(mixed $translationMemoryId, string $translationMemoryName): AuditLogEvent
+    public function toExportTranslationMemoryEvent(mixed $translationMemoryId, string $translationMemoryName): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::ExportTranslationMemory, [
             'translation_memory_id' => $translationMemoryId,
@@ -151,7 +151,7 @@ class AuditLogEventBuilder
         ]);
     }
 
-    public function toSearchLogsEvent(?string $queryStartDatetime, ?string $queryEndDatetime, ?string $queryEventType, ?string $queryDepartmentId, ?string $queryText): AuditLogEvent
+    public function toSearchLogsEvent(?string $queryStartDatetime, ?string $queryEndDatetime, ?string $queryEventType, ?string $queryDepartmentId, ?string $queryText): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::SearchLogs, [
             'query_start_datetime' => $queryStartDatetime,
@@ -162,7 +162,7 @@ class AuditLogEventBuilder
         ]);
     }
 
-    public function toExportLogsEvent(?string $queryStartDatetime, ?string $queryEndDatetime, ?string $queryEventType, ?string $queryDepartmentId, ?string $queryText): AuditLogEvent
+    public function toExportLogsEvent(?string $queryStartDatetime, ?string $queryEndDatetime, ?string $queryEventType, ?string $queryDepartmentId, ?string $queryText): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::ExportLogs, [
             'query_start_datetime' => $queryStartDatetime,
@@ -173,7 +173,7 @@ class AuditLogEventBuilder
         ]);
     }
 
-    public function toRejectAssignmentResultEvent(string $assignmentId, string $assignmentExtId): AuditLogEvent
+    public function toRejectAssignmentResultEvent(string $assignmentId, string $assignmentExtId): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::RejectAssignmentResult, [
             'assignment_id' => $assignmentId,
@@ -181,7 +181,7 @@ class AuditLogEventBuilder
         ]);
     }
 
-    public function toApproveAssignmentResultEvent(string $assignmentId, string $assignmentExtId): AuditLogEvent
+    public function toApproveAssignmentResultEvent(string $assignmentId, string $assignmentExtId): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::ApproveAssignmentResult, [
             'assignment_id' => $assignmentId,
@@ -189,7 +189,7 @@ class AuditLogEventBuilder
         ]);
     }
 
-    public function toCompleteAssignmentEvent(string $assignmentId, string $assignmentExtId): AuditLogEvent
+    public function toCompleteAssignmentEvent(string $assignmentId, string $assignmentExtId): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::CompleteAssignment, [
             'assignment_id' => $assignmentId,
@@ -197,9 +197,9 @@ class AuditLogEventBuilder
         ]);
     }
 
-    public function toMessageEvent(AuditLogEventType $eventType, ?array $eventParameters): AuditLogEvent
+    public function toMessageEvent(AuditLogEventType $eventType, ?array $eventParameters): AuditLogMessage
     {
-        return new AuditLogEvent(
+        return new AuditLogMessage(
             $eventType,
             $eventParameters,
             $this->happenedAt,
@@ -214,56 +214,56 @@ class AuditLogEventBuilder
         );
     }
 
-    public function traceId(?string $traceId): AuditLogEventBuilder
+    public function traceId(?string $traceId): AuditLogMessageBuilder
     {
         $this->traceId = $traceId;
 
         return $this;
     }
 
-    public function actingUserPic(?string $actingUserPic): AuditLogEventBuilder
+    public function actingUserPic(?string $actingUserPic): AuditLogMessageBuilder
     {
         $this->actingUserPic = $actingUserPic;
 
         return $this;
     }
 
-    public function actingUserForename(?string $actingUserForename): AuditLogEventBuilder
+    public function actingUserForename(?string $actingUserForename): AuditLogMessageBuilder
     {
         $this->actingUserForename = $actingUserForename;
 
         return $this;
     }
 
-    public function actingUserSurname(?string $actingUserSurname): AuditLogEventBuilder
+    public function actingUserSurname(?string $actingUserSurname): AuditLogMessageBuilder
     {
         $this->actingUserSurname = $actingUserSurname;
 
         return $this;
     }
 
-    public function failureType(?AuditLogEventFailureType $failureType): AuditLogEventBuilder
+    public function failureType(?AuditLogEventFailureType $failureType): AuditLogMessageBuilder
     {
         $this->failureType = $failureType;
 
         return $this;
     }
 
-    public function contextInstitutionId(?string $contextInstitutionId): AuditLogEventBuilder
+    public function contextInstitutionId(?string $contextInstitutionId): AuditLogMessageBuilder
     {
         $this->contextInstitutionId = $contextInstitutionId;
 
         return $this;
     }
 
-    public function actingInstitutionUserId(?string $actingInstitutionUserId): AuditLogEventBuilder
+    public function actingInstitutionUserId(?string $actingInstitutionUserId): AuditLogMessageBuilder
     {
         $this->actingInstitutionUserId = $actingInstitutionUserId;
 
         return $this;
     }
 
-    public function contextDepartmentId(?string $contextDepartmentId): AuditLogEventBuilder
+    public function contextDepartmentId(?string $contextDepartmentId): AuditLogMessageBuilder
     {
         $this->contextDepartmentId = $contextDepartmentId;
 

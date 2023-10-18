@@ -2,7 +2,7 @@
 
 namespace AuditLogClient\Services;
 
-use AuditLogClient\DataTransferObjects\AuditLogEvent;
+use AuditLogClient\DataTransferObjects\AuditLogMessage;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 use SyncTools\AmqpPublisher;
@@ -20,7 +20,7 @@ readonly class AuditLogPublisher
      * @throws ValidationException
      * @throws Throwable
      */
-    public function publish(AuditLogEvent $auditLogEvent): void
+    public function publish(AuditLogMessage $auditLogEvent): void
     {
         $validator = $this->validationService->makeValidator($auditLogEvent->toArray());
         $validator->validate();

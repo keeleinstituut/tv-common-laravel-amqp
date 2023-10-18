@@ -6,7 +6,7 @@ use AuditLogClient\Enums\AuditLogEventFailureType;
 use AuditLogClient\Enums\AuditLogEventType;
 use DateTime;
 
-readonly class AuditLogEvent
+readonly class AuditLogMessage
 {
     public function __construct(
         public AuditLogEventType $eventType,
