@@ -197,6 +197,26 @@ class AuditLogMessageBuilder
         ]);
     }
 
+    public function toLogInEvent(): AuditLogMessage
+    {
+        return $this->toMessageEvent(AuditLogEventType::LogIn, null);
+    }
+
+    public function toLogOutEvent(): AuditLogMessage
+    {
+        return $this->toMessageEvent(AuditLogEventType::LogOut, null);
+    }
+
+    public function toSelectInstitutionEvent(): AuditLogMessage
+    {
+        return $this->toMessageEvent(AuditLogEventType::SelectInstitution, null);
+    }
+
+    public function toExportInstitutionUsers(): AuditLogMessage
+    {
+        return $this->toMessageEvent(AuditLogEventType::ExportInstitutionUsers, null);
+    }
+
     public function toMessageEvent(AuditLogEventType $eventType, ?array $eventParameters): AuditLogMessage
     {
         return new AuditLogMessage(
