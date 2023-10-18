@@ -25,7 +25,7 @@ readonly class AuditLogPublisher
         $validator = $this->validationService->makeValidator($auditLogEvent->toArray());
         $validator->validate();
 
-        $exchange = Config::get('amqp.audit-logs_exchange');
+        $exchange = Config::get('amqp.audit_logs.exchange');
         throw_if(empty($exchange), 'Exchange name has not been declared.');
 
         $this->publisher->publish($validator->validated(), $exchange);
