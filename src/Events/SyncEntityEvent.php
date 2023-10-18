@@ -4,6 +4,7 @@ namespace SyncTools\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
+use PhpAmqpLib\Message\AMQPMessage;
 
 class SyncEntityEvent extends BaseConsumedEvent
 {
@@ -18,8 +19,10 @@ class SyncEntityEvent extends BaseConsumedEvent
      *
      * @return static
      */
-    public static function produceFromMessage(array $body): self
+    public static function produceFromMessage(AMQPMessage $message): self
     {
+        $body = json_decode($message->getBody(), true);
+
         return new static($body['id']);
     }
 }

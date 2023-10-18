@@ -4,6 +4,7 @@ namespace SyncTools\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
+use PhpAmqpLib\Message\AMQPMessage;
 
 abstract class BaseConsumedEvent
 {
@@ -14,5 +15,5 @@ abstract class BaseConsumedEvent
      *
      * @return static
      */
-    abstract public static function produceFromMessage(array $body): self;
+    abstract public static function produceFromMessage(AMQPMessage $message): self;
 }

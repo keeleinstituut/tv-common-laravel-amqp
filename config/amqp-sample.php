@@ -62,6 +62,7 @@ return [
 
         'no_local' => false, // Don't receive messages published by this consumer.
         'no_ack' => false, // Tells the server if the consumer will acknowledge the messages.
+        'enable_manual_acknowledgment' => false, // If true, disables automatic acknowledgment of messages by this AMQP library
         'exclusive' => false, // Request exclusive consumer access, meaning only this consumer can access the queue
         'nowait' => false,
         'properties' => [],

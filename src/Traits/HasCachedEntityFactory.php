@@ -14,8 +14,8 @@ trait HasCachedEntityFactory
     /**
      * Get a new factory instance for the readonly model.
      *
-     * @param callable|array|int|null $count
-     * @param callable|array $state
+     * @param  callable|array|int|null  $count
+     * @param  callable|array  $state
      * @return Factory<static>
      */
     public static function factory($count = null, $state = []): Factory

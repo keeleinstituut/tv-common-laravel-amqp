@@ -79,7 +79,7 @@ class AmqpConsumer extends AmqpBase
 
         try {
             call_user_func($this->callback, $message, $this);
-            $this->acknowledge($message);
+            $this->acknowledgeIfRequired($message);
         } catch (Throwable $e) {
             $message->getChannel()->basic_reject(
                 $message->getDeliveryTag(),
@@ -101,9 +101,11 @@ class AmqpConsumer extends AmqpBase
         }
     }
 
-    private function acknowledge(AMQPMessage $message): void
+    private function acknowledgeIfRequired(AMQPMessage $message): void
     {
-        $message->getChannel()->basic_ack($message->getDeliveryTag());
+        if (! $this->getConsumerProperty('enable_manual_acknowledgement', false)) {
+            $message->getChannel()->basic_ack($message->getDeliveryTag());
+        }
 
         if ($message->body === 'quit') {
             $message->getChannel()->basic_cancel($message->getConsumerTag());
