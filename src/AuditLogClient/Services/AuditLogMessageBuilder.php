@@ -112,7 +112,7 @@ class AuditLogMessageBuilder
     public function toModifyObjectEvent(AuditLogEventObjectType $objectType, mixed $objectId, array $preModificationSubset, array $postModificationSubset): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::ModifyObject, [
-            'object_type' => $objectType,
+            'object_type' => $objectType->value,
             'object_id' => $objectId,
             'pre_modification_subset' => $preModificationSubset,
             'post_modification_subset' => $postModificationSubset,
@@ -122,7 +122,7 @@ class AuditLogMessageBuilder
     public function toCreateObjectEvent(AuditLogEventObjectType $objectType, array $objectData): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::CreateObject, [
-            'object_type' => $objectType,
+            'object_type' => $objectType->value,
             'object_data' => $objectData,
         ]);
     }
@@ -130,7 +130,7 @@ class AuditLogMessageBuilder
     public function toRemoveObjectEvent(AuditLogEventObjectType $objectType, array $objectIdentitySubset): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::RemoveObject, [
-            'object_type' => $objectType,
+            'object_type' => $objectType->value,
             'object_identity_subset' => $objectIdentitySubset,
         ]);
     }

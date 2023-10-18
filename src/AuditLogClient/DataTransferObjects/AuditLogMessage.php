@@ -5,7 +5,6 @@ namespace AuditLogClient\DataTransferObjects;
 use AuditLogClient\Enums\AuditLogEventFailureType;
 use AuditLogClient\Enums\AuditLogEventType;
 use Carbon\Carbon;
-use DateTime;
 
 readonly class AuditLogMessage
 {
