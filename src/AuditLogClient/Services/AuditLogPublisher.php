@@ -12,7 +12,7 @@ readonly class AuditLogPublisher
 {
     public function __construct(
         private AmqpPublisher $publisher,
-        private AuditLogEventValidationService $validationService
+        private AuditLogMessageValidationService $validationService
     ) {
     }
 

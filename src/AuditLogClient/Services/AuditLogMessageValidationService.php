@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class AuditLogEventValidationService
+class AuditLogMessageValidationService
 {
     public function makeValidator(array $messageBody): \Illuminate\Contracts\Validation\Validator
     {
