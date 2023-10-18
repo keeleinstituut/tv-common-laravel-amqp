@@ -9,18 +9,19 @@ use DateTime;
 readonly class AuditLogEvent
 {
     public function __construct(
-        public AuditLogEventType         $eventType,
-        public ?array                    $eventParameters,
-        public DateTime                  $happenedAt,
-        public string                    $traceId,
-        public string                    $actingUserPic,
-        public string                    $actingUserForename,
-        public string                    $actingUserSurname,
+        public AuditLogEventType $eventType,
+        public ?array $eventParameters,
+        public DateTime $happenedAt,
+        public string $traceId,
+        public string $actingUserPic,
+        public string $actingUserForename,
+        public string $actingUserSurname,
         public ?AuditLogEventFailureType $failureType,
-        public ?string                   $contextInstitutionId,
-        public ?string                   $actingInstitutionUserId,
-        public ?string                   $contextDepartmentId
-    ) {}
+        public ?string $contextInstitutionId,
+        public ?string $actingInstitutionUserId,
+        public ?string $contextDepartmentId
+    ) {
+    }
 
     public function toArray(): array
     {

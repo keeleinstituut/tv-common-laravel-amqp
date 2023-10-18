@@ -2,6 +2,7 @@
 
 namespace AuditLogClient\Services;
 
+use AuditLogClient\DataTransferObjects\AuditLogEvent;
 use AuditLogClient\Enums\AuditLogEventFailureType;
 use AuditLogClient\Enums\AuditLogEventObjectType;
 use AuditLogClient\Enums\AuditLogEventType;
@@ -10,39 +11,36 @@ use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Request;
-use AuditLogClient\DataTransferObjects\AuditLogEvent;
 
 class AuditLogEventBuilder
 {
     public function __construct(
-        private ?DateTime                 $happenedAt = null,
-        private ?string                   $traceId = null,
-        private ?string                   $actingUserPic = null,
-        private ?string                   $actingUserForename = null,
-        private ?string                   $actingUserSurname = null,
+        private ?DateTime $happenedAt = null,
+        private ?string $traceId = null,
+        private ?string $actingUserPic = null,
+        private ?string $actingUserForename = null,
+        private ?string $actingUserSurname = null,
         private ?AuditLogEventFailureType $failureType = null,
-        private ?string                   $contextInstitutionId = null,
-        private ?string                   $actingInstitutionUserId = null,
-        private ?string                   $contextDepartmentId = null
-    )
-    {
+        private ?string $contextInstitutionId = null,
+        private ?string $actingInstitutionUserId = null,
+        private ?string $contextDepartmentId = null
+    ) {
         if (empty($happenedAt)) {
             $this->happenedAt = Date::now();
         }
     }
 
     public static function make(
-        ?DateTime                 $happenedAt = null,
-        ?string                   $traceId = null,
-        ?string                   $actingUserPic = null,
-        ?string                   $actingUserForename = null,
-        ?string                   $actingUserSurname = null,
+        ?DateTime $happenedAt = null,
+        ?string $traceId = null,
+        ?string $actingUserPic = null,
+        ?string $actingUserForename = null,
+        ?string $actingUserSurname = null,
         ?AuditLogEventFailureType $failureType = null,
-        ?string                   $contextInstitutionId = null,
-        ?string                   $actingInstitutionUserId = null,
-        ?string                   $contextDepartmentId = null
-    ): static
-    {
+        ?string $contextInstitutionId = null,
+        ?string $actingInstitutionUserId = null,
+        ?string $contextDepartmentId = null
+    ): static {
         return new static(
             $happenedAt,
             $traceId,
@@ -75,7 +73,7 @@ class AuditLogEventBuilder
     {
         return $this->toMessageEvent(AuditLogEventType::FinishProject, [
             'project_id' => $projectId,
-            'project_ext_id' => $projectExtId
+            'project_ext_id' => $projectExtId,
         ]);
     }
 
@@ -83,7 +81,7 @@ class AuditLogEventBuilder
     {
         return $this->toMessageEvent(AuditLogEventType::RewindWorkflow, [
             'workflow_id' => $workflowId,
-            'workflow_name' => $workflowName
+            'workflow_name' => $workflowName,
         ]);
     }
 
@@ -98,7 +96,7 @@ class AuditLogEventBuilder
         return $this->toMessageEvent(AuditLogEventType::DownloadProjectFile, [
             'media_id' => $mediaId,
             'project_id' => $projectId,
-            'file_name' => $fileName
+            'file_name' => $fileName,
         ]);
     }
 
@@ -107,7 +105,7 @@ class AuditLogEventBuilder
         return $this->toMessageEvent(AuditLogEventType::ExportProjectsReport, [
             'query_start_date' => $queryStartDate,
             'query_end_date' => $queryEndDate,
-            'query_status' => $queryStatus
+            'query_status' => $queryStatus,
         ]);
     }
 
@@ -117,23 +115,23 @@ class AuditLogEventBuilder
             'object_type' => $objectType,
             'object_id' => $objectId,
             'pre_modification_subset' => $preModificationSubset,
-            'post_modification_subset' => $postModificationSubset
+            'post_modification_subset' => $postModificationSubset,
         ]);
     }
 
     public function toCreateObjectEvent(AuditLogEventObjectType $objectType, array $objectData): AuditLogEvent
     {
         return $this->toMessageEvent(AuditLogEventType::CreateObject, [
-            "object_type" => $objectType,
-            "object_data" => $objectData
+            'object_type' => $objectType,
+            'object_data' => $objectData,
         ]);
     }
 
     public function toRemoveObjectEvent(AuditLogEventObjectType $objectType, array $objectIdentitySubset): AuditLogEvent
     {
         return $this->toMessageEvent(AuditLogEventType::RemoveObject, [
-            "object_type" => $objectType,
-            "object_identity_subset" => $objectIdentitySubset,
+            'object_type' => $objectType,
+            'object_identity_subset' => $objectIdentitySubset,
         ]);
     }
 
@@ -156,22 +154,22 @@ class AuditLogEventBuilder
     public function toSearchLogsEvent(?string $queryStartDatetime, ?string $queryEndDatetime, ?string $queryEventType, ?string $queryDepartmentId, ?string $queryText): AuditLogEvent
     {
         return $this->toMessageEvent(AuditLogEventType::SearchLogs, [
-            "query_start_datetime" => $queryStartDatetime,
-            "query_end_datetime" => $queryEndDatetime,
-            "query_event_type" => $queryEventType,
-            "query_department_id" => $queryDepartmentId,
-            "query_text" => $queryText,
+            'query_start_datetime' => $queryStartDatetime,
+            'query_end_datetime' => $queryEndDatetime,
+            'query_event_type' => $queryEventType,
+            'query_department_id' => $queryDepartmentId,
+            'query_text' => $queryText,
         ]);
     }
 
     public function toExportLogsEvent(?string $queryStartDatetime, ?string $queryEndDatetime, ?string $queryEventType, ?string $queryDepartmentId, ?string $queryText): AuditLogEvent
     {
         return $this->toMessageEvent(AuditLogEventType::ExportLogs, [
-            "query_start_datetime" => $queryStartDatetime,
-            "query_end_datetime" => $queryEndDatetime,
-            "query_event_type" => $queryEventType,
-            "query_department_id" => $queryDepartmentId,
-            "query_text" => $queryText,
+            'query_start_datetime' => $queryStartDatetime,
+            'query_end_datetime' => $queryEndDatetime,
+            'query_event_type' => $queryEventType,
+            'query_department_id' => $queryDepartmentId,
+            'query_text' => $queryText,
         ]);
     }
 
@@ -199,7 +197,6 @@ class AuditLogEventBuilder
         ]);
     }
 
-
     public function toMessageEvent(AuditLogEventType $eventType, ?array $eventParameters): AuditLogEvent
     {
         return new AuditLogEvent(
@@ -217,55 +214,61 @@ class AuditLogEventBuilder
         );
     }
 
-
     public function traceId(?string $traceId): AuditLogEventBuilder
     {
         $this->traceId = $traceId;
+
         return $this;
     }
 
     public function actingUserPic(?string $actingUserPic): AuditLogEventBuilder
     {
         $this->actingUserPic = $actingUserPic;
+
         return $this;
     }
 
     public function actingUserForename(?string $actingUserForename): AuditLogEventBuilder
     {
         $this->actingUserForename = $actingUserForename;
+
         return $this;
     }
 
     public function actingUserSurname(?string $actingUserSurname): AuditLogEventBuilder
     {
         $this->actingUserSurname = $actingUserSurname;
+
         return $this;
     }
 
     public function failureType(?AuditLogEventFailureType $failureType): AuditLogEventBuilder
     {
         $this->failureType = $failureType;
+
         return $this;
     }
 
     public function contextInstitutionId(?string $contextInstitutionId): AuditLogEventBuilder
     {
         $this->contextInstitutionId = $contextInstitutionId;
+
         return $this;
     }
 
     public function actingInstitutionUserId(?string $actingInstitutionUserId): AuditLogEventBuilder
     {
         $this->actingInstitutionUserId = $actingInstitutionUserId;
+
         return $this;
     }
 
     public function contextDepartmentId(?string $contextDepartmentId): AuditLogEventBuilder
     {
         $this->contextDepartmentId = $contextDepartmentId;
+
         return $this;
     }
-
 
     private static function retrieveCurrentTraceId(): string
     {

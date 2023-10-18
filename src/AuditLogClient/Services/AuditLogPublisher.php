@@ -13,13 +13,15 @@ readonly class AuditLogPublisher
     public function __construct(
         private AmqpPublisher $publisher,
         private AuditLogEventValidationService $validationService
-    ) {}
+    ) {
+    }
 
     /**
      * @throws ValidationException
      * @throws Throwable
      */
-    public function publish(AuditLogEvent $auditLogEvent): void {
+    public function publish(AuditLogEvent $auditLogEvent): void
+    {
         $validator = $this->validationService->makeValidator($auditLogEvent->toArray());
         $validator->validate();
 

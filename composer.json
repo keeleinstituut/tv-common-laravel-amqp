@@ -14,6 +14,7 @@
     "autoload": {
         "psr-4": {
             "SyncTools\\": "src/SyncTools",
+            "AuditLogClient\\": "src/AuditLogClient",
             "SyncTools\\Database\\Helpers\\": "database/helpers/"
         }
     },

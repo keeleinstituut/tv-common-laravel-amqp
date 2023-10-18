@@ -4,6 +4,9 @@
  * The file contains the configuration of 2 different connections to the same database but with different users and schemas.
  * The functionality is needed to make cached tables read-only for the app user and writable for the sync user.
  */
+
+use SyncTools\Console\DbSchemasSetupCommand;
+
 return [
     /*
      * PGSQL connection that will be used by the app. The connection will have readonly access to cached entities schema.
