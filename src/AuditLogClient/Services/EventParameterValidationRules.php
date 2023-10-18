@@ -102,6 +102,7 @@ class EventParameterValidationRules
             "$fieldNamePrefix.query_end_datetime" => ['present', 'nullable', 'date'],
             "$fieldNamePrefix.query_event_type" => ['present', 'nullable', 'string'],
             "$fieldNamePrefix.query_text" => ['present', 'nullable', 'string'],
+            "$fieldNamePrefix.query_department_id" => ['present', 'nullable', 'string'],
         ];
     }
 }
