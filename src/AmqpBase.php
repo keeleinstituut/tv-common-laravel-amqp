@@ -18,7 +18,7 @@ class AmqpBase
         $this->channel = $this->registry->getConnection()->channel();
     }
 
-    protected function getChannel(): AMQPChannel
+    public function getChannel(): AMQPChannel
     {
         return $this->channel;
     }
