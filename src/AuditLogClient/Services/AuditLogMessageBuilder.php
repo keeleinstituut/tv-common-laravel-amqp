@@ -9,6 +9,7 @@ use AuditLogClient\Enums\AuditLogEventType;
 use BadMethodCallException;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Request;
 
@@ -292,7 +293,9 @@ class AuditLogMessageBuilder
 
     private static function retrieveCurrentTraceId(): string
     {
-        return Request::header('X-Trace-Id');
+        $headerName = Config::get('amqp.audit_logs.trace_id_http_header');
+
+        return Request::header($headerName);
     }
 
     private static function retrieveCurrentUserPic(): string
