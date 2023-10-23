@@ -4,14 +4,14 @@ namespace AuditLogClient\DataTransferObjects;
 
 use AuditLogClient\Enums\AuditLogEventFailureType;
 use AuditLogClient\Enums\AuditLogEventType;
-use Carbon\Carbon;
+use Carbon\CarbonInterface;
 
 readonly class AuditLogMessage
 {
     public function __construct(
         public AuditLogEventType $eventType,
         public ?array $eventParameters,
-        public Carbon $happenedAt,
+        public CarbonInterface $happenedAt,
         public string $traceId,
         public string $actingUserPic,
         public string $actingUserForename,

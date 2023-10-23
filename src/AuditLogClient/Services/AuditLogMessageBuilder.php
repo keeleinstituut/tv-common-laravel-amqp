@@ -7,7 +7,7 @@ use AuditLogClient\Enums\AuditLogEventFailureType;
 use AuditLogClient\Enums\AuditLogEventObjectType;
 use AuditLogClient\Enums\AuditLogEventType;
 use BadMethodCallException;
-use DateTime;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Request;
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Request;
 class AuditLogMessageBuilder
 {
     public function __construct(
-        private ?DateTime $happenedAt = null,
+        private ?CarbonInterface $happenedAt = null,
         private ?string $traceId = null,
         private ?string $actingUserPic = null,
         private ?string $actingUserForename = null,
@@ -31,7 +31,7 @@ class AuditLogMessageBuilder
     }
 
     public static function make(
-        ?DateTime $happenedAt = null,
+        ?CarbonInterface $happenedAt = null,
         ?string $traceId = null,
         ?string $actingUserPic = null,
         ?string $actingUserForename = null,
