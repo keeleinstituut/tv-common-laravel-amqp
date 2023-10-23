@@ -27,7 +27,7 @@ class EventParameterValidationRules
     {
         return [
             "$fieldNamePrefix.object_type" => ['required', Rule::enum(AuditLogEventObjectType::class)],
-            "$fieldNamePrefix.object_id" => 'required',
+            "$fieldNamePrefix.object_identity_subset" => ['required', 'array'],
             "$fieldNamePrefix.pre_modification_subset" => ['required', 'array'],
             "$fieldNamePrefix.post_modification_subset" => ['required', 'array'],
         ];

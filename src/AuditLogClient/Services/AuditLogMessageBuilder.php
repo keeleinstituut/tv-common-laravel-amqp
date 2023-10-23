@@ -111,11 +111,11 @@ class AuditLogMessageBuilder
         ]);
     }
 
-    public function toModifyObjectEvent(AuditLogEventObjectType $objectType, mixed $objectId, array $preModificationSubset, array $postModificationSubset): AuditLogMessage
+    public function toModifyObjectEvent(AuditLogEventObjectType $objectType, array $objectIdentitySubset, array $preModificationSubset, array $postModificationSubset): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::ModifyObject, [
             'object_type' => $objectType->value,
-            'object_id' => $objectId,
+            'object_identity_subset' => $objectIdentitySubset,
             'pre_modification_subset' => $preModificationSubset,
             'post_modification_subset' => $postModificationSubset,
         ]);
