@@ -74,6 +74,7 @@ class EventParameterValidationRules
         return [
             "$fieldNamePrefix.media_id" => 'required',
             "$fieldNamePrefix.project_id" => 'required',
+            "$fieldNamePrefix.project_ext_id" => 'required',
             "$fieldNamePrefix.file_name" => 'required', // TODO: Required?
         ];
     }

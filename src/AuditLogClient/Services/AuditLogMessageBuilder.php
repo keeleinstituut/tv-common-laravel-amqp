@@ -92,11 +92,12 @@ class AuditLogMessageBuilder
         throw new BadMethodCallException('DISPATCH_NOTIFICATION payload not yet determined or implemented.');
     }
 
-    public function toDownloadProjectFileEvent(mixed $mediaId, string $projectId, string $fileName): AuditLogMessage
+    public function toDownloadProjectFileEvent(mixed $mediaId, string $projectId, string $projectExtId, string $fileName): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::DownloadProjectFile, [
             'media_id' => $mediaId,
             'project_id' => $projectId,
+            'project_ext_id' => $projectExtId,
             'file_name' => $fileName,
         ]);
     }
