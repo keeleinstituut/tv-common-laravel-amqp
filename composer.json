@@ -9,7 +9,8 @@
     "require": {
         "php": "^8.2",
         "php-amqplib/php-amqplib": "^3.5",
-        "illuminate/support": "^10.0"
+        "illuminate/support": "^10.0",
+        "keeleinstituut/tv-common-laravel-security": "0.0.18"
     },
     "autoload": {
         "psr-4": {
@@ -44,5 +45,11 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/keeleinstituut/tv-common-laravel-security"
+        }
+    ]
 }
