@@ -3,6 +3,7 @@
 namespace AuditLogClient\Services;
 
 use AuditLogClient\DataTransferObjects\AuditLogMessage;
+use AuditLogClient\Enums\AuditLogEventType;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 use KeycloakAuthGuard\Services\ServiceAccountJwtRetrieverInterface;
@@ -24,6 +25,10 @@ readonly class AuditLogPublisher
      */
     public function publish(AuditLogMessage $auditLogEvent): void
     {
+        if (static::isEmptyModifyObjectEvent($auditLogEvent)) {
+            return;
+        }
+
         $validator = $this->validationService->makeValidator($auditLogEvent->toArray());
         $validator->validate();
 
@@ -37,5 +42,12 @@ readonly class AuditLogPublisher
             $exchange,
             headers: ['jwt' => $jwt]
         );
+    }
+
+    private static function isEmptyModifyObjectEvent(AuditLogMessage $auditLogEvent): bool
+    {
+        return $auditLogEvent->eventType === AuditLogEventType::ModifyObject
+            && $auditLogEvent->eventParameters['pre_modification_subset'] === []
+            && $auditLogEvent->eventParameters['post_modification_subset'] === [];
     }
 }
