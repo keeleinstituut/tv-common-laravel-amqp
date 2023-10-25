@@ -12,7 +12,7 @@ readonly class AuditLogMessage
         public AuditLogEventType $eventType,
         public ?array $eventParameters,
         public CarbonInterface $happenedAt,
-        public string $traceId,
+        public ?string $traceId,
         public string $actingUserPic,
         public string $actingUserForename,
         public string $actingUserSurname,

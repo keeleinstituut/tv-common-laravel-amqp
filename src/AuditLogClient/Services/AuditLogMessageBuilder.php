@@ -312,39 +312,39 @@ class AuditLogMessageBuilder
         return $this;
     }
 
-    private static function retrieveCurrentTraceId(): string
+    private static function retrieveCurrentTraceId(): ?string
     {
         $headerName = Config::get('amqp.audit_logs.trace_id_http_header');
 
         return Request::header($headerName);
     }
 
-    private static function retrieveCurrentUserPic(): string
+    private static function retrieveCurrentUserPic(): ?string
     {
         return Auth::getCustomClaimsTokenData('personalIdentificationCode');
     }
 
-    private static function retrieveCurrentUserForename(): string
+    private static function retrieveCurrentUserForename(): ?string
     {
         return Auth::getCustomClaimsTokenData('forename');
     }
 
-    private static function retrieveCurrentUserSurname(): string
+    private static function retrieveCurrentUserSurname(): ?string
     {
         return Auth::getCustomClaimsTokenData('surname');
     }
 
-    private static function retrieveCurrentInstitutionId(): string
+    private static function retrieveCurrentInstitutionId(): ?string
     {
         return Auth::getCustomClaimsTokenData('selectedInstitution.id');
     }
 
-    private static function retrieveCurrentInstitutionUserId(): string
+    private static function retrieveCurrentInstitutionUserId(): ?string
     {
         return Auth::getCustomClaimsTokenData('institutionUserId');
     }
 
-    private static function retrieveCurrentDepartmentId(): string
+    private static function retrieveCurrentDepartmentId(): ?string
     {
         return Auth::getCustomClaimsTokenData('departmentId');
     }
