@@ -219,7 +219,7 @@ class AuditLogMessageBuilder
         return $this->toMessageEvent(AuditLogEventType::ExportInstitutionUsers, null);
     }
 
-    public function toEventWithUnprocessableEntityFailure(AuditLogEventType $eventType, array $eventParameters): AuditLogMessage
+    public function toEventWithUnprocessableEntityFailure(AuditLogEventType $eventType, ?array $eventParameters): AuditLogMessage
     {
         return $this
             ->failureType(AuditLogEventFailureType::UNPROCESSABLE_ENTITY)
