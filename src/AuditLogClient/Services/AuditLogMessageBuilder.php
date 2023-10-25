@@ -6,6 +6,7 @@ use AuditLogClient\DataTransferObjects\AuditLogMessage;
 use AuditLogClient\Enums\AuditLogEventFailureType;
 use AuditLogClient\Enums\AuditLogEventObjectType;
 use AuditLogClient\Enums\AuditLogEventType;
+use AuditLogClient\Util\ArrayUtil;
 use BadMethodCallException;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\Auth;
@@ -113,6 +114,18 @@ class AuditLogMessageBuilder
 
     public function toModifyObjectEvent(AuditLogEventObjectType $objectType, array $objectIdentitySubset, array $preModificationSubset, array $postModificationSubset): AuditLogMessage
     {
+        return $this->toMessageEvent(AuditLogEventType::ModifyObject, [
+            'object_type' => $objectType->value,
+            'object_identity_subset' => $objectIdentitySubset,
+            'pre_modification_subset' => $preModificationSubset,
+            'post_modification_subset' => $postModificationSubset,
+        ]);
+    }
+
+    public function toModifyObjectEventComputingDiff(AuditLogEventObjectType $objectType, array $objectIdentitySubset, array $objectBeforeChanges, array $objectAfterChanges): AuditLogMessage
+    {
+        [$preModificationSubset, $postModificationSubset] = ArrayUtil::multiDiffPairs($objectBeforeChanges, $objectAfterChanges);
+
         return $this->toMessageEvent(AuditLogEventType::ModifyObject, [
             'object_type' => $objectType->value,
             'object_identity_subset' => $objectIdentitySubset,
