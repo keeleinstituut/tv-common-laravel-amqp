@@ -10,6 +10,7 @@ class EventParameterValidationRules
     public static function buildRemoveObjectRules(string $fieldNamePrefix): array
     {
         return [
+            "$fieldNamePrefix" => ['required', 'array:object_type,object_identity_subset'],
             "$fieldNamePrefix.object_type" => ['required', Rule::enum(AuditLogEventObjectType::class)],
             "$fieldNamePrefix.object_identity_subset" => ['required', 'array'],
         ];
@@ -18,6 +19,7 @@ class EventParameterValidationRules
     public static function buildCreateObjectRules(string $fieldNamePrefix): array
     {
         return [
+            "$fieldNamePrefix" => ['required', 'array:object_type,object_data'],
             "$fieldNamePrefix.object_type" => ['required', Rule::enum(AuditLogEventObjectType::class)],
             "$fieldNamePrefix.object_data" => ['required', 'array'],
         ];
@@ -26,6 +28,7 @@ class EventParameterValidationRules
     public static function buildModifyObjectRules(string $fieldNamePrefix): array
     {
         return [
+            "$fieldNamePrefix" => ['required', 'array:object_type,object_identity_subset,pre_modification_subset,post_modification_subset'],
             "$fieldNamePrefix.object_type" => ['required', Rule::enum(AuditLogEventObjectType::class)],
             "$fieldNamePrefix.object_identity_subset" => ['required', 'array'],
             "$fieldNamePrefix.pre_modification_subset" => ['required', 'array'],
@@ -33,14 +36,24 @@ class EventParameterValidationRules
         ];
     }
 
-    public static function buildNoParametersRules(): array
+    public static function buildEventParameterIsNullRule(string $fieldNamePrefix): array
     {
-        return []; // event type expects no parameters
+        return [
+            "$fieldNamePrefix" => ['present', Rule::in(null)],
+        ];
+    }
+
+    public static function buildAnyEventParametersRule(string $fieldNamePrefix): array
+    {
+        return [
+            "$fieldNamePrefix" => ['present', 'nullable', 'array'],
+        ];
     }
 
     public static function buildAssignmentRules(string $fieldNamePrefix): array
     {
         return [
+            "$fieldNamePrefix" => ['required', 'array:assignment_id,assignment_ext_id'],
             "$fieldNamePrefix.assignment_id" => 'required',
             "$fieldNamePrefix.assignment_ext_id" => 'required',
         ];
@@ -49,6 +62,7 @@ class EventParameterValidationRules
     public static function buildProjectRules(string $fieldNamePrefix): array
     {
         return [
+            "$fieldNamePrefix" => ['required', 'array:project_id,project_ext_id'],
             "$fieldNamePrefix.project_id" => 'required',
             "$fieldNamePrefix.project_ext_id" => 'required',
         ];
@@ -57,6 +71,7 @@ class EventParameterValidationRules
     public static function buildWorkflowReferenceRules(string $fieldNamePrefix): array
     {
         return [
+            "$fieldNamePrefix" => ['required', 'array:workflow_id,workflow_name'],
             "$fieldNamePrefix.workflow_id" => 'required',
             "$fieldNamePrefix.workflow_name" => 'required', // TODO: Confirm?
         ];
@@ -65,13 +80,14 @@ class EventParameterValidationRules
     public static function buildNotificationDescriptionRules(string $fieldNamePrefix): array
     {
         return [
-            // TODO
+            "$fieldNamePrefix" => ['required', 'array'],
         ];
     }
 
     public static function buildProjectFileRules(string $fieldNamePrefix): array
     {
         return [
+            "$fieldNamePrefix" => ['required', 'array:media_id,project_id,project_ext_id,file_name'],
             "$fieldNamePrefix.media_id" => 'required',
             "$fieldNamePrefix.project_id" => 'required',
             "$fieldNamePrefix.project_ext_id" => 'required',
@@ -82,6 +98,7 @@ class EventParameterValidationRules
     public static function buildProjectExportRules(string $fieldNamePrefix): array
     {
         return [
+            "$fieldNamePrefix" => ['required', 'array:query_start_date,query_end_date,query_status'],
             "$fieldNamePrefix.query_start_date" => ['present', 'nullable', 'date', 'before_or_equal:end_date'],
             "$fieldNamePrefix.query_end_date" => ['present', 'nullable', 'date', 'after_or_equal:start_date'],
             "$fieldNamePrefix.query_status" => ['present', 'nullable', 'string'],
@@ -91,6 +108,7 @@ class EventParameterValidationRules
     public static function buildTranslationMemoryRules(string $fieldNamePrefix): array
     {
         return [
+            "$fieldNamePrefix" => ['required', 'array:translation_memory_id,translation_memory_name'],
             "$fieldNamePrefix.translation_memory_id" => 'required',
             "$fieldNamePrefix.translation_memory_name" => 'required', // TODO: Confirm?
         ];
@@ -99,6 +117,7 @@ class EventParameterValidationRules
     public static function buildAuditLogsRules(string $fieldNamePrefix): array
     {
         return [
+            "$fieldNamePrefix" => ['required', 'array:query_start_datetime,query_end_datetime,query_event_type,query_text,query_department_id'],
             "$fieldNamePrefix.query_start_datetime" => ['present', 'nullable', 'date'],
             "$fieldNamePrefix.query_end_datetime" => ['present', 'nullable', 'date'],
             "$fieldNamePrefix.query_event_type" => ['present', 'nullable', 'string'],

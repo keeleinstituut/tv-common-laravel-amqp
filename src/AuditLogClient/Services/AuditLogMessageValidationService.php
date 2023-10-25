@@ -13,11 +13,12 @@ class AuditLogMessageValidationService
     public function makeValidator(array $messageBody): \Illuminate\Contracts\Validation\Validator
     {
         $eventType = AuditLogEventType::tryFrom(Arr::get($messageBody, 'event_type'));
+        $failureType = AuditLogEventFailureType::tryFrom(Arr::get($messageBody, 'failure_type'));
 
-        return Validator::make($messageBody, $this->rules($eventType));
+        return Validator::make($messageBody, $this->rules($eventType, $failureType));
     }
 
-    public function rules(?AuditLogEventType $eventType): array
+    public function rules(?AuditLogEventType $eventType, ?AuditLogEventFailureType $failureType): array
     {
         return [
             'happened_at' => ['required', 'date'],
@@ -30,13 +31,16 @@ class AuditLogMessageValidationService
             'acting_user_pic' => ['present', 'nullable', 'string'],
             'acting_user_forename' => ['present', 'nullable', 'string'],
             'acting_user_surname' => ['present', 'nullable', 'string'],
-            'event_parameters' => ['present', 'nullable', 'array'],
-            ...static::buildEventParametersRules('event_parameters', $eventType),
+            ...static::buildEventParametersRules('event_parameters', $eventType, $failureType),
         ];
     }
 
-    public static function buildEventParametersRules(string $fieldNamePrefix, ?AuditLogEventType $eventType): array
+    public static function buildEventParametersRules(string $fieldNamePrefix, ?AuditLogEventType $eventType, ?AuditLogEventFailureType $failureType): array
     {
+        if ($failureType === AuditLogEventFailureType::UNPROCESSABLE_ENTITY) {
+            return EventParameterValidationRules::buildAnyEventParametersRule($fieldNamePrefix);
+        }
+
         return match ($eventType) {
             AuditLogEventType::FinishProject => EventParameterValidationRules::buildProjectRules($fieldNamePrefix),
             AuditLogEventType::RewindWorkflow => EventParameterValidationRules::buildWorkflowReferenceRules($fieldNamePrefix),
@@ -57,7 +61,7 @@ class AuditLogMessageValidationService
             AuditLogEventType::ExportInstitutionUsers,
             AuditLogEventType::SelectInstitution,
             AuditLogEventType::LogIn,
-            null => EventParameterValidationRules::buildNoParametersRules(), // event type expects no parameters
+            null => EventParameterValidationRules::buildEventParameterIsNullRule($fieldNamePrefix), // event type expects no parameters
         };
     }
 }
