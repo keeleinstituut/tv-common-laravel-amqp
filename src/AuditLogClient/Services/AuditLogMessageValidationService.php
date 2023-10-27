@@ -3,6 +3,7 @@
 namespace AuditLogClient\Services;
 
 use AuditLogClient\Enums\AuditLogEventFailureType;
+use AuditLogClient\Enums\AuditLogEventObjectType;
 use AuditLogClient\Enums\AuditLogEventType;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
@@ -13,12 +14,13 @@ class AuditLogMessageValidationService
     public function makeValidator(array $messageBody): \Illuminate\Contracts\Validation\Validator
     {
         $eventType = AuditLogEventType::tryFrom(Arr::get($messageBody, 'event_type'));
+        $objectType = AuditLogEventObjectType::tryFrom(Arr::get($messageBody, 'event_parameters.object_type'));
         $failureType = AuditLogEventFailureType::tryFrom(Arr::get($messageBody, 'failure_type'));
 
-        return Validator::make($messageBody, $this->rules($eventType, $failureType));
+        return Validator::make($messageBody, $this->rules($eventType, $failureType, $objectType));
     }
 
-    public function rules(?AuditLogEventType $eventType, ?AuditLogEventFailureType $failureType): array
+    public function rules(?AuditLogEventType $eventType, ?AuditLogEventFailureType $failureType, ?AuditLogEventObjectType $objectType): array
     {
         return [
             'happened_at' => ['required', 'date'],
@@ -31,11 +33,11 @@ class AuditLogMessageValidationService
             'acting_user_pic' => ['present', 'nullable', 'string'],
             'acting_user_forename' => ['present', 'nullable', 'string'],
             'acting_user_surname' => ['present', 'nullable', 'string'],
-            ...static::buildEventParametersRules('event_parameters', $eventType, $failureType),
+            ...static::buildEventParametersRules('event_parameters', $eventType, $failureType, $objectType),
         ];
     }
 
-    public static function buildEventParametersRules(string $fieldNamePrefix, ?AuditLogEventType $eventType, ?AuditLogEventFailureType $failureType): array
+    public static function buildEventParametersRules(string $fieldNamePrefix, ?AuditLogEventType $eventType, ?AuditLogEventFailureType $failureType, ?AuditLogEventObjectType $objectType): array
     {
         if ($failureType === AuditLogEventFailureType::UNPROCESSABLE_ENTITY) {
             return EventParameterValidationRules::buildAnyEventParametersRule($fieldNamePrefix);
@@ -47,9 +49,9 @@ class AuditLogMessageValidationService
             AuditLogEventType::DispatchNotification => EventParameterValidationRules::buildNotificationDescriptionRules($fieldNamePrefix),
             AuditLogEventType::DownloadProjectFile => EventParameterValidationRules::buildProjectFileRules($fieldNamePrefix),
             AuditLogEventType::ExportProjectsReport => EventParameterValidationRules::buildProjectExportRules($fieldNamePrefix),
-            AuditLogEventType::ModifyObject => EventParameterValidationRules::buildModifyObjectRules($fieldNamePrefix),
-            AuditLogEventType::CreateObject => EventParameterValidationRules::buildCreateObjectRules($fieldNamePrefix),
-            AuditLogEventType::RemoveObject => EventParameterValidationRules::buildRemoveObjectRules($fieldNamePrefix),
+            AuditLogEventType::ModifyObject => EventParameterValidationRules::buildModifyObjectRules($fieldNamePrefix, $objectType),
+            AuditLogEventType::CreateObject => EventParameterValidationRules::buildCreateObjectRules($fieldNamePrefix, $objectType),
+            AuditLogEventType::RemoveObject => EventParameterValidationRules::buildRemoveObjectRules($fieldNamePrefix, $objectType),
             AuditLogEventType::ImportTranslationMemory,
             AuditLogEventType::ExportTranslationMemory => EventParameterValidationRules::buildTranslationMemoryRules($fieldNamePrefix),
             AuditLogEventType::SearchLogs,

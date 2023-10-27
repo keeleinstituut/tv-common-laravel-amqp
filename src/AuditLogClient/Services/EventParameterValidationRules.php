@@ -7,16 +7,16 @@ use Illuminate\Validation\Rule;
 
 class EventParameterValidationRules
 {
-    public static function buildRemoveObjectRules(string $fieldNamePrefix): array
+    public static function buildRemoveObjectRules(string $fieldNamePrefix, ?AuditLogEventObjectType $objectType): array
     {
         return [
             "$fieldNamePrefix" => ['required', 'array:object_type,object_identity_subset'],
             "$fieldNamePrefix.object_type" => ['required', Rule::enum(AuditLogEventObjectType::class)],
-            "$fieldNamePrefix.object_identity_subset" => ['required', 'array'],
+            ...static::buildIdentitySubsetRules("$fieldNamePrefix.object_identity_subset", $objectType),
         ];
     }
 
-    public static function buildCreateObjectRules(string $fieldNamePrefix): array
+    public static function buildCreateObjectRules(string $fieldNamePrefix, ?AuditLogEventObjectType $objectType): array
     {
         return [
             "$fieldNamePrefix" => ['required', 'array:object_type,object_data'],
@@ -25,14 +25,14 @@ class EventParameterValidationRules
         ];
     }
 
-    public static function buildModifyObjectRules(string $fieldNamePrefix): array
+    public static function buildModifyObjectRules(string $fieldNamePrefix, ?AuditLogEventObjectType $objectType): array
     {
         return [
             "$fieldNamePrefix" => ['required', 'array:object_type,object_identity_subset,pre_modification_subset,post_modification_subset'],
             "$fieldNamePrefix.object_type" => ['required', Rule::enum(AuditLogEventObjectType::class)],
-            "$fieldNamePrefix.object_identity_subset" => ['required', 'array'],
             "$fieldNamePrefix.pre_modification_subset" => ['required', 'array'],
             "$fieldNamePrefix.post_modification_subset" => ['required', 'array'],
+            ...static::buildIdentitySubsetRules("$fieldNamePrefix.object_identity_subset", $objectType),
         ];
     }
 
@@ -124,5 +124,34 @@ class EventParameterValidationRules
             "$fieldNamePrefix.query_text" => ['present', 'nullable', 'string'],
             "$fieldNamePrefix.query_department_id" => ['present', 'nullable', 'string'],
         ];
+    }
+
+    private static function buildIdentitySubsetRules(string $fieldNamePrefix, ?AuditLogEventObjectType $objectType): array
+    {
+        return match ($objectType) {
+            AuditLogEventObjectType::InstitutionUser => [
+                "$fieldNamePrefix" => ['required', 'array:id,user'],
+                "$fieldNamePrefix.id" => ['required', 'uuid'],
+                "$fieldNamePrefix.user" => ['required', 'array:id,personal_identification_code,forename, surname'],
+                "$fieldNamePrefix.user.id" => ['required', 'uuid'],
+                "$fieldNamePrefix.user.personal_identification_code" => ['filled', 'string'],
+                "$fieldNamePrefix.user.forename" => ['filled', 'string'],
+                "$fieldNamePrefix.user.surname" => ['filled', 'string'],
+            ],
+            AuditLogEventObjectType::Role, AuditLogEventObjectType::Institution => [
+                "$fieldNamePrefix" => ['required', 'array:id,name'],
+                "$fieldNamePrefix.id" => ['required', 'uuid'],
+                "$fieldNamePrefix.name" => ['filled', 'string'],
+            ],
+            AuditLogEventObjectType::Vendor,
+            AuditLogEventObjectType::InstitutionDiscount,
+            AuditLogEventObjectType::Project,
+            AuditLogEventObjectType::Subproject,
+            AuditLogEventObjectType::Assignment,
+            AuditLogEventObjectType::TranslationMemory => [
+                "$fieldNamePrefix" => ['required', 'array'],
+                // TODO
+            ],
+        };
     }
 }

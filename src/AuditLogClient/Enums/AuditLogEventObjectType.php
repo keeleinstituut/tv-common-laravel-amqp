@@ -4,7 +4,6 @@ namespace AuditLogClient\Enums;
 
 enum AuditLogEventObjectType: string
 {
-    case User = 'USER';
     case InstitutionUser = 'INSTITUTION_USER';
     case Role = 'ROLE';
     case Institution = 'INSTITUTION';
