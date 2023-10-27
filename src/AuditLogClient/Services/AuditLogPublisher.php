@@ -25,7 +25,7 @@ readonly class AuditLogPublisher
      */
     public function publish(AuditLogMessage $auditLogEvent): void
     {
-        if (static::isEmptyModifyObjectEvent($auditLogEvent)) {
+        if (empty($auditLogEvent->failureType) && static::isEmptyModifyObjectEvent($auditLogEvent)) {
             return;
         }
 
