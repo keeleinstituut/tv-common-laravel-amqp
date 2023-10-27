@@ -132,7 +132,7 @@ class EventParameterValidationRules
             AuditLogEventObjectType::InstitutionUser => [
                 "$fieldNamePrefix" => ['required', 'array:id,user'],
                 "$fieldNamePrefix.id" => ['required', 'uuid'],
-                "$fieldNamePrefix.user" => ['required', 'array:id,personal_identification_code,forename, surname'],
+                "$fieldNamePrefix.user" => ['required', 'array:id,personal_identification_code,forename,surname'],
                 "$fieldNamePrefix.user.id" => ['required', 'uuid'],
                 "$fieldNamePrefix.user.personal_identification_code" => ['filled', 'string'],
                 "$fieldNamePrefix.user.forename" => ['filled', 'string'],
