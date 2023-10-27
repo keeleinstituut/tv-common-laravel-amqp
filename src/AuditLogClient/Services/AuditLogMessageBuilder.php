@@ -112,7 +112,7 @@ class AuditLogMessageBuilder
         ]);
     }
 
-    public function toModifyObjectEvent(AuditLogEventObjectType $objectType, array $objectIdentitySubset, array $preModificationSubset, array $postModificationSubset): AuditLogMessage
+    public function toModifyObjectEvent(AuditLogEventObjectType $objectType, ?array $objectIdentitySubset, array $preModificationSubset, array $postModificationSubset): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::ModifyObject, [
             'object_type' => $objectType->value,
@@ -122,7 +122,7 @@ class AuditLogMessageBuilder
         ]);
     }
 
-    public function toModifyObjectEventComputingDiff(AuditLogEventObjectType $objectType, array $objectIdentitySubset, array $objectBeforeChanges, array $objectAfterChanges): AuditLogMessage
+    public function toModifyObjectEventComputingDiff(AuditLogEventObjectType $objectType, ?array $objectIdentitySubset, array $objectBeforeChanges, array $objectAfterChanges): AuditLogMessage
     {
         [$preModificationSubset, $postModificationSubset] = ArrayUtil::multiDiffPairs($objectBeforeChanges, $objectAfterChanges);
 
@@ -142,7 +142,7 @@ class AuditLogMessageBuilder
         ]);
     }
 
-    public function toRemoveObjectEvent(AuditLogEventObjectType $objectType, array $objectIdentitySubset): AuditLogMessage
+    public function toRemoveObjectEvent(AuditLogEventObjectType $objectType, ?array $objectIdentitySubset): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::RemoveObject, [
             'object_type' => $objectType->value,

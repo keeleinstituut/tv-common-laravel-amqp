@@ -138,20 +138,34 @@ class EventParameterValidationRules
                 "$fieldNamePrefix.user.forename" => ['filled', 'string'],
                 "$fieldNamePrefix.user.surname" => ['filled', 'string'],
             ],
-            AuditLogEventObjectType::Role, AuditLogEventObjectType::Institution => [
+            AuditLogEventObjectType::Role,
+            AuditLogEventObjectType::Institution,
+            AuditLogEventObjectType::TranslationMemory => [
                 "$fieldNamePrefix" => ['required', 'array:id,name'],
                 "$fieldNamePrefix.id" => ['required', 'uuid'],
                 "$fieldNamePrefix.name" => ['filled', 'string'],
             ],
-            AuditLogEventObjectType::Vendor,
-            AuditLogEventObjectType::InstitutionDiscount,
+            AuditLogEventObjectType::Vendor => [
+                "$fieldNamePrefix" => ['required', 'array:id,institution_user'],
+                "$fieldNamePrefix.id" => ['required', 'uuid'],
+                "$fieldNamePrefix.institution_user" => ['required', 'array:id,user'],
+                "$fieldNamePrefix.institution_user.id" => ['required', 'uuid'],
+                "$fieldNamePrefix.institution_user.user" => ['required', 'array:id,personal_identification_code,forename,surname'],
+                "$fieldNamePrefix.institution_user.user.id" => ['required', 'uuid'],
+                "$fieldNamePrefix.institution_user.user.personal_identification_code" => ['filled', 'string'],
+                "$fieldNamePrefix.institution_user.user.forename" => ['filled', 'string'],
+                "$fieldNamePrefix.institution_user.user.surname" => ['filled', 'string'],
+            ],
             AuditLogEventObjectType::Project,
             AuditLogEventObjectType::Subproject,
-            AuditLogEventObjectType::Assignment,
-            AuditLogEventObjectType::TranslationMemory => [
-                "$fieldNamePrefix" => ['required', 'array'],
-                // TODO
+            AuditLogEventObjectType::Assignment => [
+                "$fieldNamePrefix" => ['required', 'array:id,ext_id'],
+                "$fieldNamePrefix.id" => ['required', 'uuid'],
+                "$fieldNamePrefix.ext_id" => ['filled', 'string'],
             ],
+            AuditLogEventObjectType::InstitutionDiscount => [
+                "$fieldNamePrefix" => ['present', Rule::in([null])],
+            ]
         };
     }
 }
