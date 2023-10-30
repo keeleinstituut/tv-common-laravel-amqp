@@ -39,7 +39,7 @@ class AuditLogMessageValidationService
 
     public static function buildEventParametersRules(string $fieldNamePrefix, ?AuditLogEventType $eventType, ?AuditLogEventFailureType $failureType, ?AuditLogEventObjectType $objectType): array
     {
-        if ($failureType === AuditLogEventFailureType::UNPROCESSABLE_ENTITY) {
+        if (filled($failureType)) {
             return EventParameterValidationRules::buildAnyEventParametersRule($fieldNamePrefix);
         }
 
