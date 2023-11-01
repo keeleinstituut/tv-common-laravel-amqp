@@ -4,6 +4,9 @@ namespace AuditLogClient\Services;
 
 use AuditLogClient\DataTransferObjects\AuditLogMessage;
 use AuditLogClient\Enums\AuditLogEventType;
+use AuditLogClient\Models\AuditLoggable;
+use Closure;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 use KeycloakAuthGuard\Services\ServiceAccountJwtRetrieverInterface;
@@ -42,6 +45,100 @@ readonly class AuditLogPublisher
             $exchange,
             headers: ['jwt' => $jwt]
         );
+    }
+
+    /**
+     * @throws Throwable
+     * @throws ValidationException
+     */
+    public function publishRemoveObject(AuditLoggable $object): void
+    {
+        $message = AuditLogMessageBuilder::makeUsingJWT()->toRemoveObjectEvent(
+            $object->getAuditLogObjectType(),
+            $object->getIdentitySubset()
+        );
+
+        $this->publish($message);
+    }
+
+    /**
+     * @throws Throwable
+     * @throws ValidationException
+     */
+    public function publishCreateObject(AuditLoggable $object): void
+    {
+        $message = AuditLogMessageBuilder::makeUsingJWT()->toCreateObjectEvent(
+            $object->getAuditLogObjectType(),
+            $object->getAuditLogRepresentation()
+        );
+
+        $this->publish($message);
+    }
+
+    /**
+     * @template T
+     *
+     * @param  Closure(): T  $action
+     *
+     * @throws ValidationException
+     * @throws Throwable
+     */
+    public function publishModifyObjectAfterAction(AuditLoggable $object, Closure $action): mixed
+    {
+        $identityBeforeAction = $object->getIdentitySubset();
+        $dataBeforeAction = $object->getAuditLogRepresentation();
+
+        $result = $action();
+        $dataAfterAction = $object->getAuditLogRepresentation();
+
+        $message = AuditLogMessageBuilder::makeUsingJWT()->toModifyObjectEventComputingDiff(
+            $object->getAuditLogObjectType(),
+            $identityBeforeAction,
+            $dataBeforeAction,
+            $dataAfterAction
+        );
+
+        $this->publish($message);
+
+        return $result;
+    }
+
+    /**
+     * @template T
+     *
+     * @param  Closure(): T  $action
+     * @param  array<AuditLoggable>|Collection<AuditLoggable>  $objects
+     *
+     * @throws Throwable
+     */
+    public function publishModifyObjectsAfterAction(array|Collection $objects, Closure $action): mixed
+    {
+
+        $objectsIdentityAndDataBeforeAction = collect($objects)
+            ->map(fn (AuditLoggable $object) => [
+                $object,
+                $object->getIdentitySubset(),
+                $object->getAuditLogRepresentation(),
+            ]);
+
+        $result = $action();
+
+        $objectsIdentityAndDataBeforeAction->eachSpread(
+            function (AuditLoggable $object, array $identityBeforeAction, array $dataBeforeAction): void {
+                $dataAfterAction = $object->getAuditLogRepresentation();
+
+                $message = AuditLogMessageBuilder::makeUsingJWT()->toModifyObjectEventComputingDiff(
+                    $object->getAuditLogObjectType(),
+                    $identityBeforeAction,
+                    $dataBeforeAction,
+                    $dataAfterAction
+                );
+
+                $this->publish($message);
+            }
+        );
+
+        return $result;
     }
 
     private static function isEmptyModifyObjectEvent(AuditLogMessage $auditLogEvent): bool
