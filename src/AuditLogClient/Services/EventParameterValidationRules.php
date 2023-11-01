@@ -164,7 +164,11 @@ class EventParameterValidationRules
                 "$fieldNamePrefix.ext_id" => ['filled', 'string'],
             ],
             AuditLogEventObjectType::InstitutionDiscount => [
-                "$fieldNamePrefix" => ['present', Rule::in([null])],
+                "$fieldNamePrefix" => ['required', 'array:id,institution'],
+                "$fieldNamePrefix.id" => ['required', 'uuid'],
+                "$fieldNamePrefix.institution" => ['required', 'array:id,name'],
+                "$fieldNamePrefix.institution.id" => ['required', 'uuid'],
+                "$fieldNamePrefix.institution.name" => ['filled', 'string'],
             ]
         };
     }
