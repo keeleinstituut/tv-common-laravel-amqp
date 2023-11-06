@@ -103,6 +103,22 @@ class AuditLogMessageBuilder
         ]);
     }
 
+    public function toDownloadSubprojectXliffsEvent(string $subProjectId, string $subProjectExtId): AuditLogMessage
+    {
+        return $this->toMessageEvent(AuditLogEventType::DownloadSubProjectXliffs, [
+            'subproject_id' => $subProjectId,
+            'subproject_ext_id' => $subProjectExtId,
+        ]);
+    }
+
+    public function toDownloadSubprojectTranslationsEvent(string $subProjectId, string $subProjectExtId): AuditLogMessage
+    {
+        return $this->toMessageEvent(AuditLogEventType::DownloadSubProjectTranslations, [
+            'subproject_id' => $subProjectId,
+            'subproject_ext_id' => $subProjectExtId,
+        ]);
+    }
+
     public function toExportProjectsReportEvent(?string $queryStartDate, ?string $queryEndDate, ?string $queryStatus): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::ExportProjectsReport, [

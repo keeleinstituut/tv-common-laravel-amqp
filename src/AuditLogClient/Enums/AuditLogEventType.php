@@ -17,6 +17,8 @@ enum AuditLogEventType: string
     case RewindWorkflow = 'REWIND_WORKFLOW';
     case DispatchNotification = 'DISPATCH_NOTIFICATION';
     case DownloadProjectFile = 'DOWNLOAD_PROJECT_FILE';
+    case DownloadSubProjectXliffs = 'DOWNLOAD_SUBPROJECT_CAT_XLIFF';
+    case DownloadSubProjectTranslations = 'DOWNLOAD_SUBPROJECT_TRANSLATIONS';
     case ExportInstitutionUsers = 'EXPORT_INSTITUTION_USERS';
     case ExportProjectsReport = 'EXPORT_PROJECTS_REPORT';
     case ExportTranslationMemory = 'EXPORT_TRANSLATION_MEMORY';
