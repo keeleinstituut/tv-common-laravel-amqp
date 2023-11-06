@@ -19,7 +19,7 @@ class EventParameterValidationRules
     public static function buildCreateObjectRules(string $fieldNamePrefix, ?AuditLogEventObjectType $objectType): array
     {
         return [
-            "$fieldNamePrefix" => ['required', 'array:object_type,object_data'],
+            "$fieldNamePrefix" => ['required', 'array:object_type,object_data,object_identity_subset'],
             "$fieldNamePrefix.object_type" => ['required', Rule::enum(AuditLogEventObjectType::class)],
             "$fieldNamePrefix.object_data" => ['required', 'array'],
             ...static::buildIdentitySubsetRules("$fieldNamePrefix.object_identity_subset", $objectType),
