@@ -69,7 +69,8 @@ readonly class AuditLogPublisher
     {
         $message = AuditLogMessageBuilder::makeUsingJWT()->toCreateObjectEvent(
             $object->getAuditLogObjectType(),
-            $object->getAuditLogRepresentation()
+            $object->getAuditLogRepresentation(),
+            $object->getIdentitySubset()
         );
 
         $this->publish($message);

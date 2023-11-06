@@ -150,11 +150,12 @@ class AuditLogMessageBuilder
         ]);
     }
 
-    public function toCreateObjectEvent(AuditLogEventObjectType $objectType, array $objectData): AuditLogMessage
+    public function toCreateObjectEvent(AuditLogEventObjectType $objectType, array $objectData, array $objectIdentitySubset): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::CreateObject, [
             'object_type' => $objectType->value,
             'object_data' => $objectData,
+            'object_identity_subset' => $objectIdentitySubset,
         ]);
     }
 
