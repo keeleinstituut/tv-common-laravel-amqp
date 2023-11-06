@@ -79,6 +79,7 @@ readonly class AuditLogPublisher
      * @template T
      *
      * @param  Closure(): T  $action
+     * @return T
      *
      * @throws ValidationException
      * @throws Throwable
@@ -108,6 +109,7 @@ readonly class AuditLogPublisher
      *
      * @param  Closure(): T  $action
      * @param  array<AuditLoggable>|Collection<AuditLoggable>  $objects
+     * @return T
      *
      * @throws Throwable
      */

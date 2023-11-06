@@ -169,7 +169,8 @@ class EventParameterValidationRules
                 "$fieldNamePrefix.institution" => ['required', 'array:id,name'],
                 "$fieldNamePrefix.institution.id" => ['required', 'uuid'],
                 "$fieldNamePrefix.institution.name" => ['filled', 'string'],
-            ]
+            ],
+            default => []
         };
     }
 }
