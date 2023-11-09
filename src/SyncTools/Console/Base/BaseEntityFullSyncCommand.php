@@ -33,7 +33,8 @@ abstract class BaseEntityFullSyncCommand extends Command
         $entityRepository->deleteNotSynced();
     }
 
-    private function purgePreviousSingleSyncQueue(AmqpBase $amqpBase): void {
+    private function purgePreviousSingleSyncQueue(AmqpBase $amqpBase): void
+    {
         $amqpBase->getChannel()->queue_purge($this->getSingleSyncQueueName());
     }
 
@@ -41,5 +42,5 @@ abstract class BaseEntityFullSyncCommand extends Command
 
     abstract protected function getEntityRepository(): CachedEntityRepositoryInterface;
 
-    abstract protected function getSingleSyncQueueName(): String;
+    abstract protected function getSingleSyncQueueName(): string;
 }

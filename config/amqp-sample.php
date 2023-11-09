@@ -78,4 +78,13 @@ return [
             'global' => false,
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Audit Log AMQP properties (remove if not needed)
+    |--------------------------------------------------------------------------
+    */
+    'audit_logs' => [
+        'exchange' => env('AUDIT_LOG_EVENTS_EXCHANGE', 'audit-log-events'),
+    ],
 ];

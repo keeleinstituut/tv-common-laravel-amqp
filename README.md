@@ -205,6 +205,20 @@ class Institution extends Model
 }
 ```
 
+### Audit Log Messages
+Use `AuditLogEventBuilder` to create an `AuditLogEvent` object and feed that object into `AuditLogPublisher#publish()` in order to publish audit log events.
+
+Configuration parameters for audit log messages (`amqp.php`): set `amqp.audit_logs.exchange` to the exchange which audit log messages are sent to. 
+The specified exchange must be be declared in the `amqp.publisher` section just like other exchanges. 
+
+```php
+return [
+    'audit_logs' => [
+        'exchange' => env('AUDIT_LOG_EVENTS_EXCHANGE', 'audit-log-events'),
+    ]
+];
+```
+
 ## Tests
 ```bash
 composer test
