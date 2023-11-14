@@ -338,31 +338,38 @@ class AuditLogMessageBuilder
 
     private static function retrieveCurrentUserPic(): ?string
     {
-        return Auth::getCustomClaimsTokenData('personalIdentificationCode');
+        return static::getJwtTokenData('personalIdentificationCode');
     }
 
     private static function retrieveCurrentUserForename(): ?string
     {
-        return Auth::getCustomClaimsTokenData('forename');
+        return static::getJwtTokenData('forename');
     }
 
     private static function retrieveCurrentUserSurname(): ?string
     {
-        return Auth::getCustomClaimsTokenData('surname');
+        return static::getJwtTokenData('surname');
     }
 
     private static function retrieveCurrentInstitutionId(): ?string
     {
-        return Auth::getCustomClaimsTokenData('selectedInstitution.id');
+        return static::getJwtTokenData('selectedInstitution.id');
     }
 
     private static function retrieveCurrentInstitutionUserId(): ?string
     {
-        return Auth::getCustomClaimsTokenData('institutionUserId');
+        return static::getJwtTokenData('institutionUserId');
     }
 
     private static function retrieveCurrentDepartmentId(): ?string
     {
-        return Auth::getCustomClaimsTokenData('departmentId');
+        return static::getJwtTokenData('departmentId');
+    }
+
+    private static function getJwtTokenData(string $key): ?string {
+        if (!Auth::check()) {
+            return "";
+        }
+        return Auth::getCustomClaimsTokenData($key);
     }
 }
