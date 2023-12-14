@@ -41,7 +41,7 @@ readonly class EmailNotificationMessage
         return new static(
             $notificationType,
             data_get($params, 'receiver_email', ''),
-            data_get($params, 'variables'),
+            data_get($params, 'variables', []),
             data_get($params, 'receiver_name'),
         );
     }
