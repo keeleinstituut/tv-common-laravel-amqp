@@ -47,4 +47,14 @@ return [
         'exchange' => env('AUDIT_LOG_EVENTS_EXCHANGE'),
         'trace_id_http_header' => env('AUDIT_LOG_TRACE_ID_HTTP_HEADER'),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Notifications AMQP properties (remove if not needed)
+    |--------------------------------------------------------------------------
+    */
+    'notifications' => [
+        'email_notification_exchange' => env('EMAIL_NOTIFICATION_EXCHANGE'),
+        'required_jwt_realm_role' => env('NOTIFICATION_REQUIRED_JWT_REALM_ROLE', 'publish-notifications'),
+    ],
 ];
