@@ -24,9 +24,6 @@ readonly class EmailNotificationMessage
         );
     }
 
-    /**
-     * @throws Throwable
-     */
     public static function make(array $params): static
     {
         $notificationType = data_get($params, 'notification_type');
