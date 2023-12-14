@@ -1,10 +1,10 @@
 <?php
 
-namespace NotificationClient;
+namespace NotificationClient\Services;
 
 use Illuminate\Support\Facades\Config;
-use NotificationClient\DataTransferObjects\EmailNotificationMessage;
 use KeycloakAuthGuard\Services\ServiceAccountJwtRetrieverInterface;
+use NotificationClient\DataTransferObjects\EmailNotificationMessage;
 use SyncTools\AmqpPublisher;
 use Throwable;
 

@@ -16,12 +16,16 @@
         "psr-4": {
             "SyncTools\\": "src/SyncTools",
             "AuditLogClient\\": "src/AuditLogClient",
-            "NotificationClient\\\\": "src/NotificationClient",
+            "NotificationClient\\": "src/NotificationClient",
             "SyncTools\\Database\\Helpers\\": "database/helpers/"
         }
     },
     "autoload-dev": {
         "psr-4": {
+            "SyncTools\\": "src/SyncTools",
+            "AuditLogClient\\": "src/AuditLogClient",
+            "NotificationClient\\": "src/NotificationClient",
+            "SyncTools\\Database\\Helpers\\": "database/helpers/",
             "SyncTools\\Tests\\": "tests/"
         }
     },
