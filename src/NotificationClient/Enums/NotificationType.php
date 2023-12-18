@@ -8,7 +8,6 @@ enum NotificationType: string
      * Notifications for the translation project manager (PM)
      */
     case ProjectCreated = 'PROJECT_CREATED';
-    case ProjectCancelledPm = 'PROJECT_CANCELLED_PM';
     case ProjectSentToClient = 'PROJECT_SENT_TO_CLIENT';
     case SubProjectSentToPm = 'SUBPROJECT_SENT_TO_PM';
     case ProjectRejected = 'PROJECT_REJECTED';
@@ -17,7 +16,6 @@ enum NotificationType: string
      * Notifications for the client
      */
     case ProjectRegistered = 'PROJECT_REGISTERED';
-    case ProjectCancelledClient = 'PROJECT_CANCELLED_CLIENT';
     case ProjectReadyForReview = 'PROJECT_READY_FOR_REVIEW';
 
     /**
@@ -28,6 +26,7 @@ enum NotificationType: string
     case SubProjectTaskMarkedAsDone = 'SUBPROJECT_TASK_MARKED_AS_DONE';
     case ProjectAccepted = 'PROJECT_ACCEPTED';
     case ProjectDeadlineReached = 'PROJECT_DEADLINE_REACHED';
+    case ProjectCancelled = 'PROJECT_CANCELLED';
 
     /**
      * Notifications for the vendor
