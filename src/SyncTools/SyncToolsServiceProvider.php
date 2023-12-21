@@ -31,7 +31,7 @@ class SyncToolsServiceProvider extends ServiceProvider
         $this->registerCommands();
     }
 
-    protected function registerCommands()
+    protected function registerCommands(): void
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
