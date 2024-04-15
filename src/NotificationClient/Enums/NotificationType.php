@@ -33,6 +33,7 @@ enum NotificationType: string
      */
     case TaskCreated = 'TASK_CREATED';
     case TaskRejected = 'TASK_REJECTED';
+    case TaskCancelled = 'TASK_CANCELLED';
 
     /**
      * Notifications related to account management
