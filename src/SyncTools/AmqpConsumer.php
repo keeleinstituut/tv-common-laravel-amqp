@@ -8,6 +8,9 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use PhpAmqpLib\Exception\AMQPChannelClosedException;
+use PhpAmqpLib\Exception\AMQPConnectionClosedException;
+use PhpAmqpLib\Exception\AMQPHeartbeatMissedException;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use PhpAmqpLib\Message\AMQPMessage;
 use SyncTools\Exceptions\InvalidConfigurationException;
@@ -15,6 +18,10 @@ use Throwable;
 
 class AmqpConsumer extends AmqpBase
 {
+    const RETRY_ATTEMPTS = 5;
+
+    const SECONDS_BETWEEN_ATTEMPTS = 1;
+
     protected ?Closure $callback;
 
     /**
@@ -127,22 +134,52 @@ class AmqpConsumer extends AmqpBase
         }
 
         $queueConfig = $queuesMap[$queue];
-        $this->getChannel()->queue_declare(
-            $queue,
-            $queueConfig['passive'] ?? false,
-            $queueConfig['durable'] ?? true,
-            $queueConfig['exclusive'] ?? false,
-            $queueConfig['auto_delete'] ?? false,
-            $queueConfig['nowait'] ?? false,
-            $queueConfig['properties'] ?? [],
-        );
+
+        $declared = false;
+        $attempt = 0;
+        do {
+            try {
+                $attempt++;
+                $this->getChannel()->queue_declare(
+                    $queue,
+                    $queueConfig['passive'] ?? false,
+                    $queueConfig['durable'] ?? true,
+                    $queueConfig['exclusive'] ?? false,
+                    $queueConfig['auto_delete'] ?? false,
+                    $queueConfig['nowait'] ?? false,
+                    $queueConfig['properties'] ?? [],
+                );
+                $declared = true;
+            } catch (AMQPHeartbeatMissedException | AMQPChannelClosedException | AMQPConnectionClosedException $e) {
+                if ($attempt > self::RETRY_ATTEMPTS) {
+                    throw $e;
+                }
+
+                sleep(self::SECONDS_BETWEEN_ATTEMPTS);
+            }
+        } while (! $declared);
+
 
         foreach ($queueConfig['bindings'] as $bindingConfig) {
-            $this->getChannel()->queue_bind(
-                $queueConfig['queue'],
-                $bindingConfig['exchange'],
-                $bindingConfig['routingKey'] ?? '',
-            );
+            $bound = false;
+            $attempt = 0;
+            do {
+                try {
+                    $attempt++;
+                    $this->getChannel()->queue_bind(
+                        $queueConfig['queue'],
+                        $bindingConfig['exchange'],
+                        $bindingConfig['routingKey'] ?? '',
+                    );
+                    $bound = true;
+                } catch (AMQPHeartbeatMissedException | AMQPChannelClosedException | AMQPConnectionClosedException $e) {
+                    if ($attempt > self::RETRY_ATTEMPTS) {
+                        throw $e;
+                    }
+
+                    sleep(self::SECONDS_BETWEEN_ATTEMPTS);
+                }
+            } while (! $bound);
         }
     }
 

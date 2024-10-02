@@ -10,17 +10,18 @@ class AmqpBase
 {
     private array $properties;
 
-    private AMQPChannel $channel;
+    private ?int $channelId = null;
 
     public function __construct(private readonly AmqpConnectionRegistry $registry)
     {
         $this->properties = Config::get('amqp', []);
-        $this->channel = $this->registry->getConnection()->channel();
     }
 
     public function getChannel(): AMQPChannel
     {
-        return $this->channel;
+        $channel = $this->registry->getConnection()->channel($this->channelId);
+        $this->channelId = $channel->getChannelId();
+        return $channel;
     }
 
     protected function getProperty(string $key, $default = null): mixed
