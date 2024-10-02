@@ -7,22 +7,45 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
 use JsonSerializable;
+use PhpAmqpLib\Exception\AMQPChannelClosedException;
+use PhpAmqpLib\Exception\AMQPConnectionClosedException;
+use PhpAmqpLib\Exception\AMQPHeartbeatMissedException;
+use PhpAmqpLib\Exception\AMQPRuntimeException;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
 
 class AmqpPublisher extends AmqpBase
 {
+    const RETRY_ATTEMPTS = 5;
+
+    const SECONDS_BETWEEN_ATTEMPTS = 1;
+
     private array $declaredExchanges = [];
 
     public function publish(mixed $message, string $exchange, string $routingKey = '', ?array $headers = null): void
     {
         $this->declareExchangeOnce($exchange);
 
-        $this->getChannel()->basic_publish(
-            $this->composeMessage($message, $headers),
-            $exchange,
-            $routingKey
-        );
+        $published = false;
+        $attempt = 0;
+        $message = $this->composeMessage($message, $headers);
+        do {
+            try {
+                $attempt++;
+                $this->getChannel()->basic_publish(
+                    $message,
+                    $exchange,
+                    $routingKey
+                );
+                $published = true;
+            } catch (AMQPHeartbeatMissedException | AMQPChannelClosedException | AMQPConnectionClosedException $e) {
+                if ($attempt > self::RETRY_ATTEMPTS) {
+                    throw $e;
+                }
+
+                sleep(self::SECONDS_BETWEEN_ATTEMPTS);
+            }
+        } while (! $published);
     }
 
     /**
@@ -52,16 +75,30 @@ class AmqpPublisher extends AmqpBase
             throw new InvalidArgumentException("Exchange '$exchange' is not declared");
         }
 
-        $this->getChannel()->exchange_declare(
-            $exchangeConfig['exchange'],
-            $exchangeConfig['type'],
-            $exchangeConfig['passive'] ?? false,
-            $exchangeConfig['durable'] ?? true,
-            $exchangeConfig['auto_delete'] ?? false,
-            $exchangeConfig['internal'] ?? false,
-            $exchangeConfig['nowait'] ?? false,
-            $exchangeConfig['properties'] ?? [],
-        );
+        $declared = false;
+        $attempt = 0;
+        do {
+            try {
+                $attempt++;
+                $this->getChannel()->exchange_declare(
+                    $exchangeConfig['exchange'],
+                    $exchangeConfig['type'],
+                    $exchangeConfig['passive'] ?? false,
+                    $exchangeConfig['durable'] ?? true,
+                    $exchangeConfig['auto_delete'] ?? false,
+                    $exchangeConfig['internal'] ?? false,
+                    $exchangeConfig['nowait'] ?? false,
+                    $exchangeConfig['properties'] ?? [],
+                );
+                $declared = true;
+            } catch (AMQPHeartbeatMissedException | AMQPChannelClosedException | AMQPConnectionClosedException $e) {
+                if ($attempt > self::RETRY_ATTEMPTS) {
+                    throw $e;
+                }
+
+                sleep(self::SECONDS_BETWEEN_ATTEMPTS);
+            }
+        } while (! $declared);
 
         $this->declaredExchanges[$exchange] = true;
     }
