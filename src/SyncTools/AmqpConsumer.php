@@ -6,6 +6,7 @@ use Closure;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use PhpAmqpLib\Exception\AMQPChannelClosedException;
@@ -80,6 +81,9 @@ class AmqpConsumer extends AmqpBase
      */
     public function handle(AMQPMessage $message): void
     {
+        Log::info('Processing message - exchange: ' . $message->getExchange() . '; delivery-tag: ' . $message->getDeliveryTag());
+        //        Log::debug('Message body: ' . $message->getBody());
+
         if (! is_callable($this->callback)) {
             throw new InvalidConfigurationException("Callback $this->callback is not callable.");
         }
@@ -87,12 +91,15 @@ class AmqpConsumer extends AmqpBase
         try {
             call_user_func($this->callback, $message, $this);
             $this->acknowledgeIfRequired($message);
+
+            Log::info('Processing successful');
         } catch (Throwable $e) {
             $message->getChannel()->basic_reject(
                 $message->getDeliveryTag(),
                 true
             );
 
+            Log::info('Processing failed');
             throw $e;
         }
     }
