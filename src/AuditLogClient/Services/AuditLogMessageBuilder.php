@@ -119,7 +119,7 @@ class AuditLogMessageBuilder
         ]);
     }
 
-    public function toExportProjectsReportEvent(?string $queryStartDate, ?string $queryEndDate, ?string $queryStatus): AuditLogMessage
+    public function toExportProjectsReportEvent(?string $queryStartDate, ?string $queryEndDate, ?array $queryStatus): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::ExportProjectsReport, [
             'query_start_date' => $queryStartDate,

@@ -100,9 +100,10 @@ class EventParameterValidationRules
     {
         return [
             "$fieldNamePrefix" => ['required', 'array:query_start_date,query_end_date,query_status'],
-            "$fieldNamePrefix.query_start_date" => ['present', 'nullable', 'date', 'before_or_equal:end_date'],
-            "$fieldNamePrefix.query_end_date" => ['present', 'nullable', 'date', 'after_or_equal:start_date'],
-            "$fieldNamePrefix.query_status" => ['present', 'nullable', 'string'],
+            "$fieldNamePrefix.query_start_date" => ['present', 'nullable', 'date'],
+            "$fieldNamePrefix.query_end_date" => ['present', 'nullable', 'date'],
+            "$fieldNamePrefix.query_status" => ['present', 'nullable', 'array'],
+            "$fieldNamePrefix.query_status.*" => ['present', 'string'],
         ];
     }
 
