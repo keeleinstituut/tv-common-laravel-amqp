@@ -44,7 +44,8 @@ class AuditLogMessageValidationService
         }
 
         return match ($eventType) {
-            AuditLogEventType::FinishProject => EventParameterValidationRules::buildProjectRules($fieldNamePrefix),
+            AuditLogEventType::FinishProject,
+            AuditLogEventType::CancelProject => EventParameterValidationRules::buildProjectRules($fieldNamePrefix),
             AuditLogEventType::RewindWorkflow => EventParameterValidationRules::buildWorkflowReferenceRules($fieldNamePrefix),
             AuditLogEventType::DispatchNotification => EventParameterValidationRules::buildNotificationDescriptionRules($fieldNamePrefix),
             AuditLogEventType::DownloadProjectFile => EventParameterValidationRules::buildProjectFileRules($fieldNamePrefix),

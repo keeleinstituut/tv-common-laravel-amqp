@@ -79,6 +79,14 @@ class AuditLogMessageBuilder
         ]);
     }
 
+    public function toCancelProjectEvent(string $projectId, string $projectExtId): AuditLogMessage
+    {
+        return $this->toMessageEvent(AuditLogEventType::CancelProject, [
+            'project_id' => $projectId,
+            'project_ext_id' => $projectExtId,
+        ]);
+    }
+
     public function toRewindWorkflowEvent(string $workflowId, string $workflowName): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::RewindWorkflow, [

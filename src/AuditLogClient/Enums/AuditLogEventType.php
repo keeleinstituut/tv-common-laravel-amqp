@@ -12,6 +12,7 @@ enum AuditLogEventType: string
     case RemoveObject = 'REMOVE_OBJECT';
     case CompleteAssignment = 'COMPLETE_ASSIGNMENT';
     case FinishProject = 'FINISH_PROJECT';
+    case CancelProject = 'CANCEL_PROJECT';
     case ApproveAssignmentResult = 'APPROVE_ASSIGNMENT_RESULT';
     case RejectAssignmentResult = 'REJECT_ASSIGNMENT_RESULT';
     case RewindWorkflow = 'REWIND_WORKFLOW';
