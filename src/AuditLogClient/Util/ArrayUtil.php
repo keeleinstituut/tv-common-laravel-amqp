@@ -34,9 +34,13 @@ class ArrayUtil
      *
      * @link https://github.com/rogervila/array-diff-multidimensional/blob/1c3b418c915f1fad3659e679dd3401a66a224178/src/ArrayDiffMultidimensional.php
      */
-    public static function computeMultiDimensionalDiffConsideringOrder(array $array1, array $array2): array
+    public static function computeMultiDimensionalDiffConsideringOrder(array $array1, ?array $array2): array
     {
         $result = [];
+
+        if ($array2 == null) {
+            return $array1;
+        }
 
         if (array_is_list($array1) && array_is_list($array2)) {
             return $array1 === $array2 ? [] : $array1;
