@@ -44,8 +44,8 @@ class AuditLogMessageValidationService
         }
 
         return match ($eventType) {
-            AuditLogEventType::FinishProject,
-            AuditLogEventType::CancelProject => EventParameterValidationRules::buildProjectRules($fieldNamePrefix),
+            AuditLogEventType::ApproveProject,
+            AuditLogEventType::RejectProject => EventParameterValidationRules::buildProjectRules($fieldNamePrefix),
             AuditLogEventType::RewindWorkflow => EventParameterValidationRules::buildWorkflowReferenceRules($fieldNamePrefix),
             AuditLogEventType::DispatchNotification => EventParameterValidationRules::buildNotificationDescriptionRules($fieldNamePrefix),
             AuditLogEventType::DownloadProjectFile => EventParameterValidationRules::buildProjectFileRules($fieldNamePrefix),
@@ -59,6 +59,7 @@ class AuditLogMessageValidationService
             AuditLogEventType::ExportLogs => EventParameterValidationRules::buildAuditLogsRules($fieldNamePrefix),
             AuditLogEventType::RejectAssignmentResult,
             AuditLogEventType::ApproveAssignmentResult,
+            AuditLogEventType::AcceptTask,
             AuditLogEventType::CompleteAssignment => EventParameterValidationRules::buildAssignmentRules($fieldNamePrefix),
             AuditLogEventType::LogOut,
             AuditLogEventType::ExportInstitutionUsers,

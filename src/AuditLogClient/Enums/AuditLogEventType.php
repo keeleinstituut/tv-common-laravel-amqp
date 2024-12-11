@@ -11,8 +11,8 @@ enum AuditLogEventType: string
     case ModifyObject = 'MODIFY_OBJECT';
     case RemoveObject = 'REMOVE_OBJECT';
     case CompleteAssignment = 'COMPLETE_ASSIGNMENT';
-    case FinishProject = 'FINISH_PROJECT';
-    case CancelProject = 'CANCEL_PROJECT';
+    case ApproveProject = 'APPROVE_PROJECT';
+    case RejectProject = 'REJECT_PROJECT';
     case ApproveAssignmentResult = 'APPROVE_ASSIGNMENT_RESULT';
     case RejectAssignmentResult = 'REJECT_ASSIGNMENT_RESULT';
     case RewindWorkflow = 'REWIND_WORKFLOW';
@@ -26,6 +26,7 @@ enum AuditLogEventType: string
     case ImportTranslationMemory = 'IMPORT_TRANSLATION_MEMORY';
     case SearchLogs = 'SEARCH_LOGS';
     case ExportLogs = 'EXPORT_LOGS';
+    case AcceptTask = 'ACCEPT_TASK';
 
     public static function values(): array
     {

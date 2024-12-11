@@ -71,9 +71,17 @@ class AuditLogMessageBuilder
         );
     }
 
-    public function toFinishProjectEvent(string $projectId, string $projectExtId): AuditLogMessage
+    public function toApproveProjectEvent(string $projectId, string $projectExtId): AuditLogMessage
     {
-        return $this->toMessageEvent(AuditLogEventType::FinishProject, [
+        return $this->toMessageEvent(AuditLogEventType::ApproveProject, [
+            'project_id' => $projectId,
+            'project_ext_id' => $projectExtId,
+        ]);
+    }
+
+    public function toRejectProjectEvent(string $projectId, string $projectExtId): AuditLogMessage
+    {
+        return $this->toMessageEvent(AuditLogEventType::RejectProject, [
             'project_id' => $projectId,
             'project_ext_id' => $projectExtId,
         ]);
@@ -95,10 +103,9 @@ class AuditLogMessageBuilder
         ]);
     }
 
-    /** @todo */
-    public function toDispatchNotificationEvent()
+    public function toDispatchNotificationEvent($eventData)
     {
-        throw new BadMethodCallException('DISPATCH_NOTIFICATION payload not yet determined or implemented.');
+        return $this->toMessageEvent(AuditLogEventType::DispatchNotification, $eventData);
     }
 
     public function toDownloadProjectFileEvent(mixed $mediaId, string $projectId, string $projectExtId, string $fileName): AuditLogMessage
@@ -232,6 +239,14 @@ class AuditLogMessageBuilder
     public function toCompleteAssignmentEvent(string $assignmentId, string $assignmentExtId): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::CompleteAssignment, [
+            'assignment_id' => $assignmentId,
+            'assignment_ext_id' => $assignmentExtId,
+        ]);
+    }
+
+    public function toAcceptTaskEvent(string $assignmentId, string $assignmentExtId): AuditLogMessage
+    {
+        return $this->toMessageEvent(AuditLogEventType::AcceptTask, [
             'assignment_id' => $assignmentId,
             'assignment_ext_id' => $assignmentExtId,
         ]);
