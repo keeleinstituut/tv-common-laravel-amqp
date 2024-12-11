@@ -21,17 +21,21 @@ readonly class NotificationPublisher
     /**
      * @throws Throwable
      */
-    public function publishEmailNotification(EmailNotificationMessage $message): void
+    public function publishEmailNotification(EmailNotificationMessage $message, $institutionId = null): void
     {
         $exchange = Config::get('amqp.notifications.email_notification_exchange');
         throw_if(empty($exchange), 'Exchange name has not been declared.');
+
+        if ($institutionId == null) {
+            $institutionId = Auth::getCustomClaimsTokenData('selectedInstitution.id');
+        }
 
         $this->publisher->publish(
             $message->toArray(),
             $exchange,
             headers: [
                 'jwt' => $this->jwtRetriever->getJwt(),
-                'institutionId' => Auth::getCustomClaimsTokenData('selectedInstitution.id'),
+                'institutionId' => $institutionId,
             ]
         );
     }
