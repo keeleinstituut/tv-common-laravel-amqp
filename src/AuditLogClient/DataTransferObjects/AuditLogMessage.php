@@ -13,11 +13,11 @@ readonly class AuditLogMessage
         public ?array $eventParameters,
         public CarbonInterface $happenedAt,
         public ?string $traceId,
-        public string $actingUserPic,
-        public string $actingUserForename,
-        public string $actingUserSurname,
+        public ?string $actingUserPic,
+        public ?string $actingUserForename,
+        public ?string $actingUserSurname,
         public ?AuditLogEventFailureType $failureType,
-        public ?string $contextInstitutionId,
+        public string $contextInstitutionId,
         public ?string $actingInstitutionUserId,
         public ?string $contextDepartmentId
     ) {
