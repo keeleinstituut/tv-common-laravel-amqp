@@ -2,6 +2,7 @@
 
 namespace NotificationClient\Services;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use KeycloakAuthGuard\Services\ServiceAccountJwtRetrieverInterface;
 use NotificationClient\DataTransferObjects\EmailNotificationMessage;
@@ -28,7 +29,10 @@ readonly class NotificationPublisher
         $this->publisher->publish(
             $message->toArray(),
             $exchange,
-            headers: ['jwt' => $this->jwtRetriever->getJwt()]
+            headers: [
+                'jwt' => $this->jwtRetriever->getJwt(),
+                'institutionId' => Auth::getCustomClaimsTokenData('selectedInstitution.id'),
+            ]
         );
     }
 }
