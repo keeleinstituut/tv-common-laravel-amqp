@@ -66,6 +66,7 @@ class AuditLogMessageValidationService
             AuditLogEventType::SelectInstitution,
             AuditLogEventType::LogIn,
             null => EventParameterValidationRules::buildEventParameterIsNullRule($fieldNamePrefix), // event type expects no parameters
+            default => EventParameterValidationRules::buildAnyEventParametersRule($fieldNamePrefix),
         };
     }
 }
