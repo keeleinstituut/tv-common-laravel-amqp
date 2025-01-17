@@ -198,7 +198,7 @@ class AuditLogMessageBuilder
         ]);
     }
 
-    public function toSearchLogsEvent(?string $queryStartDatetime, ?string $queryEndDatetime, ?string $queryEventType, ?string $queryDepartmentId, ?string $queryText): AuditLogMessage
+    public function toSearchLogsEvent(?string $queryStartDatetime, ?string $queryEndDatetime, ?string $queryEventType, ?string $queryDepartmentId, ?string $queryText, ?string $queryActingUserPic): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::SearchLogs, [
             'query_start_datetime' => $queryStartDatetime,
@@ -206,10 +206,11 @@ class AuditLogMessageBuilder
             'query_event_type' => $queryEventType,
             'query_department_id' => $queryDepartmentId,
             'query_text' => $queryText,
+            'acting_user_pic' => $queryActingUserPic
         ]);
     }
 
-    public function toExportLogsEvent(?string $queryStartDatetime, ?string $queryEndDatetime, ?string $queryEventType, ?string $queryDepartmentId, ?string $queryText): AuditLogMessage
+    public function toExportLogsEvent(?string $queryStartDatetime, ?string $queryEndDatetime, ?string $queryEventType, ?string $queryDepartmentId, ?string $queryText, ?string $queryActingUserPic): AuditLogMessage
     {
         return $this->toMessageEvent(AuditLogEventType::ExportLogs, [
             'query_start_datetime' => $queryStartDatetime,
@@ -217,6 +218,7 @@ class AuditLogMessageBuilder
             'query_event_type' => $queryEventType,
             'query_department_id' => $queryDepartmentId,
             'query_text' => $queryText,
+            'acting_user_pic' => $queryActingUserPic
         ]);
     }
 
@@ -386,7 +388,7 @@ class AuditLogMessageBuilder
 
     private static function retrieveCurrentDepartmentId(): ?string
     {
-        return static::getJwtTokenData('departmentId');
+        return static::getJwtTokenData('department.id');
     }
 
     private static function getJwtTokenData(string $key): ?string {
