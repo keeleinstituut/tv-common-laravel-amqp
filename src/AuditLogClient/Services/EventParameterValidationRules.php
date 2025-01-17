@@ -119,12 +119,13 @@ class EventParameterValidationRules
     public static function buildAuditLogsRules(string $fieldNamePrefix): array
     {
         return [
-            "$fieldNamePrefix" => ['required', 'array:query_start_datetime,query_end_datetime,query_event_type,query_text,query_department_id'],
+            "$fieldNamePrefix" => ['required', 'array:query_start_datetime,query_end_datetime,query_event_type,query_text,query_department_id,acting_user_pic'],
             "$fieldNamePrefix.query_start_datetime" => ['present', 'nullable', 'date'],
             "$fieldNamePrefix.query_end_datetime" => ['present', 'nullable', 'date'],
             "$fieldNamePrefix.query_event_type" => ['present', 'nullable', 'string'],
             "$fieldNamePrefix.query_text" => ['present', 'nullable', 'string'],
             "$fieldNamePrefix.query_department_id" => ['present', 'nullable', 'string'],
+            "$fieldNamePrefix.acting_user_pic" => ['present', 'nullable', 'string'],
         ];
     }
 
