@@ -10,7 +10,6 @@ class SyncToolsServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/../config/amqp.php' => config_path('amqp.php'),
-            __DIR__.'/../config/pgsql-connection.php' => config_path('pgsql-connection.php'),
         ]);
     }
 
@@ -37,7 +36,6 @@ class SyncToolsServiceProvider extends ServiceProvider
             $this->commands([
                 Console\ConsumeCommand::class,
                 Console\AmqpSetupCommand::class,
-                Console\DbSchemasSetupCommand::class,
             ]);
         }
     }
