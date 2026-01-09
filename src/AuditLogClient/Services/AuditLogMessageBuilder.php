@@ -356,7 +356,9 @@ class AuditLogMessageBuilder
 
     private static function retrieveCurrentTraceId(): ?string
     {
-        $headerName = Config::get('amqp.audit_logs.trace_id_http_header');
+        if (!$headerName = Config::get('amqp.audit_logs.trace_id_http_header')) {
+            return null;
+        }
 
         return Request::header($headerName);
     }
