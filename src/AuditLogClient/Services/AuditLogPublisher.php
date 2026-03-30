@@ -49,6 +49,27 @@ readonly class AuditLogPublisher
         // );
     }
 
+    public function publishEmailNotification(AuditLogMessage $auditLogEvent): void
+    {
+         if (empty($auditLogEvent->failureType) && static::isEmptyModifyObjectEvent($auditLogEvent)) {
+             return;
+         }
+
+         $validator = $this->validationService->makeValidator($auditLogEvent->toArray());
+         $validator->validate();
+
+         $exchange = Config::get('amqp.audit_logs.exchange');
+         throw_if(empty($exchange), 'Exchange name has not been declared.');
+
+         $jwt = $this->jwtRetriever->getJwt();
+
+         $this->publisher->publish(
+             $validator->validated(),
+             $exchange,
+             headers: ['jwt' => $jwt]
+         );
+    }
+
     /**
      * @throws Throwable
      * @throws ValidationException
