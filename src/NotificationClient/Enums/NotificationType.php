@@ -11,6 +11,8 @@ enum NotificationType: string
     case ProjectSentToClient = 'PROJECT_SENT_TO_CLIENT';
     case SubProjectSentToPm = 'SUBPROJECT_SENT_TO_PM';
     case ProjectRejected = 'PROJECT_REJECTED';
+    case TaskDeclinedByVendor = 'TASK_DECLINED_BY_VENDOR';
+    case NoExternalVendorsAvailable = 'NO_EXTERNAL_VENDORS_AVAILABLE';
 
     /**
      * Notifications for the client
