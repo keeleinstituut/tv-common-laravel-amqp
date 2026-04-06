@@ -26,7 +26,7 @@ readonly class EmailNotificationMessage
 
     public static function make(array $params): static
     {
-        $notificationType = data_get($params, 'notification_type');
+        $notificationType = data_get($params, 'notification_type') ?? data_get($params, 'type');
         if (is_string($notificationType)) {
             $notificationType = NotificationType::tryFrom($notificationType);
         }
