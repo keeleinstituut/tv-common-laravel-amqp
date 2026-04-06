@@ -152,7 +152,7 @@ readonly class AuditLogPublisher
     /**
      * @throws Throwable
      */
-    public function publishDispatchedNotification(EmailNotificationMessage $notification): void
+    public function publishDispatchedNotification(EmailNotificationMessage $notification, ?string $institutionId = null): void
     {
         $exchange = Config::get('amqp.audit_logs.exchange');
         throw_if(empty($exchange), 'Exchange name has not been declared.');
@@ -167,7 +167,7 @@ readonly class AuditLogPublisher
                 'actor_name' => trim($forename . ' ' . $surname),
                 'actor_session' => null,
                 'actor_department_id' => Auth::check() ? Auth::getCustomClaimsTokenData('department.id') : null,
-                'actor_institution_id' => Auth::check() ? Auth::getCustomClaimsTokenData('selectedInstitution.id') : '',
+                'actor_institution_id' => $institutionId ?? (Auth::check() ? Auth::getCustomClaimsTokenData('selectedInstitution.id') : ''),
                 'actor_institution_user_id' => Auth::check() ? Auth::getCustomClaimsTokenData('institutionUserId') : null,
             ],
             'notification' => [
