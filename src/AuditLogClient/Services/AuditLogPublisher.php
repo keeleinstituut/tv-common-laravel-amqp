@@ -7,9 +7,12 @@ use AuditLogClient\Enums\AuditLogEventType;
 use AuditLogClient\Models\AuditLoggable;
 use Closure;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Validation\ValidationException;
 use KeycloakAuthGuard\Services\ServiceAccountJwtRetrieverInterface;
+use NotificationClient\DataTransferObjects\EmailNotificationMessage;
 use SyncTools\AmqpPublisher;
 use Throwable;
 
@@ -47,27 +50,6 @@ readonly class AuditLogPublisher
         //     $exchange,
         //     headers: ['jwt' => $jwt]
         // );
-    }
-
-    public function publishEmailNotification(AuditLogMessage $auditLogEvent): void
-    {
-         if (empty($auditLogEvent->failureType) && static::isEmptyModifyObjectEvent($auditLogEvent)) {
-             return;
-         }
-
-         $validator = $this->validationService->makeValidator($auditLogEvent->toArray());
-         $validator->validate();
-
-         $exchange = Config::get('amqp.audit_logs.exchange');
-         throw_if(empty($exchange), 'Exchange name has not been declared.');
-
-         $jwt = $this->jwtRetriever->getJwt();
-
-         $this->publisher->publish(
-             $validator->validated(),
-             $exchange,
-             headers: ['jwt' => $jwt]
-         );
     }
 
     /**
@@ -165,6 +147,42 @@ readonly class AuditLogPublisher
         );
 
         return $result;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function publishDispatchedNotification(EmailNotificationMessage $notification): void
+    {
+        $exchange = Config::get('amqp.audit_logs.exchange');
+        throw_if(empty($exchange), 'Exchange name has not been declared.');
+
+        $forename = Auth::check() ? Auth::getCustomClaimsTokenData('forename') : '';
+        $surname = Auth::check() ? Auth::getCustomClaimsTokenData('surname') : '';
+
+        $payload = [
+            'general' => [
+                'happened_at' => Date::now()->toISOString(),
+                'actor_pic' => Auth::check() ? Auth::getCustomClaimsTokenData('personalIdentificationCode') : '',
+                'actor_name' => trim($forename . ' ' . $surname),
+                'actor_session' => null,
+                'actor_department_id' => Auth::check() ? Auth::getCustomClaimsTokenData('department.id') : null,
+                'actor_institution_id' => Auth::check() ? Auth::getCustomClaimsTokenData('selectedInstitution.id') : '',
+                'actor_institution_user_id' => Auth::check() ? Auth::getCustomClaimsTokenData('institutionUserId') : null,
+            ],
+            'notification' => [
+                'type' => $notification->notificationType->value,
+                'params' => $notification->toArray(),
+            ],
+        ];
+
+        $jwt = $this->jwtRetriever->getJwt();
+
+        $this->publisher->publish(
+            $payload,
+            $exchange,
+            headers: ['jwt' => $jwt]
+        );
     }
 
     private static function isEmptyModifyObjectEvent(AuditLogMessage $auditLogEvent): bool
