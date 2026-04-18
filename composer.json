@@ -10,7 +10,7 @@
         "php": "^8.2",
         "php-amqplib/php-amqplib": "^3.5",
         "illuminate/support": "^10.0 || ^11.0 || ^12.0",
-        "keeleinstituut/tv-common-laravel-security": "^0.0.22"
+        "keeleinstituut/tv-common-laravel-security": "~0.0.22"
     },
     "autoload": {
         "psr-4": {
