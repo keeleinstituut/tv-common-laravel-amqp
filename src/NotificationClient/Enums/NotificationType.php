@@ -14,6 +14,7 @@ enum NotificationType: string
     case TaskDeclinedByVendor = 'TASK_DECLINED_BY_VENDOR';
     case NoExternalVendorsAvailable = 'NO_EXTERNAL_VENDORS_AVAILABLE';
     case ProjectTimeslotPassedWithNoAssignee = 'PROJECT_TIMESLOT_PASSED_WITH_NO_ASSIGNEE';
+    case VendorWasNotAssignedAutomatically = 'VENDOR_WAS_NOT_ASSIGNED_AUTOMATICALLY';
 
     /**
      * Notifications for the client
