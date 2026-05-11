@@ -44,4 +44,14 @@ enum NotificationType: string
      */
     case InstitutionUserCreated = 'INSTITUTION_USER_CREATED';
     case InstitutionUserActivated = 'INSTITUTION_USER_ACTIVATED';
+
+    /**
+     * Notifications related to outsource requests
+     */
+    case OutsourceOfferRequestSent      = 'OUTSOURCE_OFFER_REQUEST_SENT';
+    case OutsourceOfferRequestAccepted  = 'OUTSOURCE_OFFER_REQUEST_ACCEPTED';
+    case OutsourceOfferRequestDeclined  = 'OUTSOURCE_OFFER_REQUEST_DECLINED';
+    case OutsourceOfferRequestExpired   = 'OUTSOURCE_OFFER_REQUEST_EXPIRED';
+    case OutsourceOfferDeclined         = 'OUTSOURCE_OFFER_DECLINED';
+    case OutsourceRequestCancelled      = 'OUTSOURCE_REQUEST_CANCELLED';
 }
