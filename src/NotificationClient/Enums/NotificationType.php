@@ -12,6 +12,7 @@ enum NotificationType: string
     case SubProjectSentToPm = 'SUBPROJECT_SENT_TO_PM';
     case ProjectRejected = 'PROJECT_REJECTED';
     case TaskDeclinedByVendor = 'TASK_DECLINED_BY_VENDOR';
+    case ReactionTimeExpired = 'REACTION_TIME_EXPIRED';
     case NoExternalVendorsAvailable = 'NO_EXTERNAL_VENDORS_AVAILABLE';
     case ProjectTimeslotPassedWithNoAssignee = 'PROJECT_TIMESLOT_PASSED_WITH_NO_ASSIGNEE';
     case VendorWasNotAssignedAutomatically = 'VENDOR_WAS_NOT_ASSIGNED_AUTOMATICALLY';
