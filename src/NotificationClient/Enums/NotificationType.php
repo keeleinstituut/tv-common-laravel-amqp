@@ -54,5 +54,6 @@ enum NotificationType: string
     case OutsourceOfferRequestDeclined  = 'OUTSOURCE_OFFER_REQUEST_DECLINED';
     case OutsourceOfferRequestExpired   = 'OUTSOURCE_OFFER_REQUEST_EXPIRED';
     case OutsourceOfferDeclined         = 'OUTSOURCE_OFFER_DECLINED';
+    case OutsourceOfferAccepted         = 'OUTSOURCE_OFFER_ACCEPTED';
     case OutsourceRequestCancelled      = 'OUTSOURCE_REQUEST_CANCELLED';
 }
