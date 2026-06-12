@@ -22,6 +22,7 @@ enum NotificationType: string
      */
     case ProjectRegistered = 'PROJECT_REGISTERED';
     case ProjectReadyForReview = 'PROJECT_READY_FOR_REVIEW';
+    case ProjectUpdated = 'PROJECT_UPDATED';
 
     /**
      * Notifications that are common for client and PM
@@ -39,6 +40,7 @@ enum NotificationType: string
     case TaskCreated = 'TASK_CREATED';
     case TaskRejected = 'TASK_REJECTED';
     case TaskCancelled = 'TASK_CANCELLED';
+    case TaskUpdated = 'TASK_UPDATED';
 
     /**
      * Notifications related to account management
